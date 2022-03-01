@@ -21,10 +21,16 @@
     </properties>
 
     <dependencies>
+        <!-- 基础 -->
         <dependency>
             <groupId>cn.imadc.application</groupId>
             <artifactId>base-skeleton-dependency</artifactId>
             <version>${base.skeleton.dependency.version}</version>
+        </dependency>
+        <!-- netty -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
         </dependency>
     </dependencies>
 
