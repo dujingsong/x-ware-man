@@ -2,6 +2,7 @@ package cn.imadc.application.xwareman;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.rocketmq.remoting.netty.NettySystemConfig;
 
 /**
  * <p>

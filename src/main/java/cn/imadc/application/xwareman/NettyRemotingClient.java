@@ -8,6 +8,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.remoting.common.Pair;
 import org.apache.rocketmq.remoting.common.RemotingHelper;
 import org.apache.rocketmq.remoting.common.RemotingUtil;
 import org.apache.rocketmq.remoting.exception.RemotingConnectException;
@@ -16,6 +17,8 @@ import org.apache.rocketmq.remoting.exception.RemotingTimeoutException;
 import org.apache.rocketmq.remoting.exception.RemotingTooMuchRequestException;
 import org.apache.rocketmq.remoting.netty.NettyDecoder;
 import org.apache.rocketmq.remoting.netty.NettyEncoder;
+import org.apache.rocketmq.remoting.netty.NettyEvent;
+import org.apache.rocketmq.remoting.netty.NettyEventType;
 import org.apache.rocketmq.remoting.protocol.RemotingCommand;
 
 import java.net.SocketAddress;
@@ -54,12 +57,6 @@ public class NettyRemotingClient extends NettyRemotingAbstract implements Remoti
     private ExecutorService callbackExecutor;
     private final ExecutorService publicExecutor;
     private final Timer timer = new Timer("ClientHouseKeepingService", true);
-
-    private static int initValueIndex() {
-        Random r = new Random();
-
-        return Math.abs(r.nextInt() % 999) % 999;
-    }
 
     public NettyRemotingClient(final NettyClientConfig nettyClientConfig, final ChannelEventListener channelEventListener) {
         super(nettyClientConfig.getClientAsyncSemaphoreValue());

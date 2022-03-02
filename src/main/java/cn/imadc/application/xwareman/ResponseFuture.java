@@ -3,6 +3,7 @@ package cn.imadc.application.xwareman;
 import io.netty.channel.Channel;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.rocketmq.remoting.common.SemaphoreReleaseOnlyOnce;
 import org.apache.rocketmq.remoting.protocol.RemotingCommand;
 
 import java.util.concurrent.CountDownLatch;

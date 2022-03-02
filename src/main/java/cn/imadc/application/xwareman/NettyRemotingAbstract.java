@@ -5,11 +5,14 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.remoting.common.Pair;
 import org.apache.rocketmq.remoting.common.RemotingHelper;
+import org.apache.rocketmq.remoting.common.SemaphoreReleaseOnlyOnce;
 import org.apache.rocketmq.remoting.common.ServiceThread;
 import org.apache.rocketmq.remoting.exception.RemotingSendRequestException;
 import org.apache.rocketmq.remoting.exception.RemotingTimeoutException;
 import org.apache.rocketmq.remoting.exception.RemotingTooMuchRequestException;
+import org.apache.rocketmq.remoting.netty.NettyEvent;
 import org.apache.rocketmq.remoting.protocol.RemotingCommand;
 import org.apache.rocketmq.remoting.protocol.RemotingSysResponseCode;
 
@@ -111,16 +114,16 @@ public abstract class NettyRemotingAbstract {
                     if (event != null && listener != null) {
                         switch (event.getType()) {
                             case IDLE:
-                                listener.onChannelIdle(event.getRemoteAddress(), event.getChannel());
+                                listener.onChannelIdle(event.getRemoteAddr(), event.getChannel());
                                 break;
                             case CLOSE:
-                                listener.onChannelClose(event.getRemoteAddress(), event.getChannel());
+                                listener.onChannelClose(event.getRemoteAddr(), event.getChannel());
                                 break;
                             case CONNECT:
-                                listener.onChannelConnect(event.getRemoteAddress(), event.getChannel());
+                                listener.onChannelConnect(event.getRemoteAddr(), event.getChannel());
                                 break;
                             case EXCEPTION:
-                                listener.onChannelException(event.getRemoteAddress(), event.getChannel());
+                                listener.onChannelException(event.getRemoteAddr(), event.getChannel());
                                 break;
                             default:
                                 break;
