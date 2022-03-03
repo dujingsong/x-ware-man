@@ -42,6 +42,12 @@
             <artifactId>rocketmq-remoting</artifactId>
             <version>4.7.1</version>
         </dependency>
+        <!--lettuce-->
+        <dependency>
+            <groupId>io.lettuce</groupId>
+            <artifactId>lettuce-core</artifactId>
+            <version>6.1.6.RELEASE</version>
+        </dependency>
     </dependencies>
 
     <build>
