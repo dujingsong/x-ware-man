@@ -1,4 +1,4 @@
-package cn.imadc.application.xwareman;
+package cn.imadc.application.xwareman.base.config;
 
 import lombok.Getter;
 import lombok.Setter;

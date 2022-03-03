@@ -1,16 +1,15 @@
-package cn.imadc.application.xwareman;
+package cn.imadc.application.xwareman.base.remoting;
 
+import org.apache.rocketmq.remoting.InvokeCallback;
 import org.apache.rocketmq.remoting.exception.RemotingConnectException;
 import org.apache.rocketmq.remoting.exception.RemotingSendRequestException;
 import org.apache.rocketmq.remoting.exception.RemotingTimeoutException;
 import org.apache.rocketmq.remoting.exception.RemotingTooMuchRequestException;
 import org.apache.rocketmq.remoting.protocol.RemotingCommand;
 
-import java.util.concurrent.ExecutorService;
-
 /**
  * <p>
- *
+ * 远程通信客户端
  * </p>
  *
  * @author 杜劲松
@@ -26,6 +25,4 @@ public interface RemotingClient extends RemotingService {
                      final InvokeCallback invokeCallback)
             throws InterruptedException, RemotingConnectException, RemotingTooMuchRequestException,
             RemotingTimeoutException, RemotingSendRequestException;
-
-    void registerProcessor(final int requestCode, final NettyRequestProcessor processor, final ExecutorService executor);
 }

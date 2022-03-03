@@ -1,4 +1,4 @@
-package cn.imadc.application.xwareman;
+package cn.imadc.application.xwareman.base.processor;
 
 import io.netty.channel.ChannelHandlerContext;
 import org.apache.rocketmq.remoting.protocol.RemotingCommand;
