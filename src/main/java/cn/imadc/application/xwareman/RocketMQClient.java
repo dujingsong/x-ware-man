@@ -1,7 +1,10 @@
 package cn.imadc.application.xwareman;
 
-import cn.imadc.application.xwareman.base.config.NettyClientConfig;
-import cn.imadc.application.xwareman.base.listener.ChannelEventListener;
+import cn.imadc.application.base.netty.config.NettyClientConfig;
+import cn.imadc.application.base.netty.listener.ChannelEventListener;
+import cn.imadc.application.base.netty.remoting.NettyClientHandler;
+import cn.imadc.application.base.netty.remoting.NettyConnectManageHandler;
+import cn.imadc.application.base.netty.remoting.SimpleNettyRemotingClientAbstract;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.IdleStateHandler;
@@ -33,9 +36,9 @@ import java.util.Map;
 @Slf4j
 @Getter
 @Setter
-public class RocketMQNettyRemotingClient extends SimpleNettyRemotingClientAbstract {
+public class RocketMQClient extends SimpleNettyRemotingClientAbstract {
 
-    public RocketMQNettyRemotingClient(NettyClientConfig nettyClientConfig, ChannelEventListener channelEventListener) {
+    public RocketMQClient(NettyClientConfig nettyClientConfig, ChannelEventListener channelEventListener) {
         super(nettyClientConfig, channelEventListener);
     }
 
