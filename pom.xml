@@ -21,10 +21,16 @@
     </properties>
 
     <dependencies>
-        <!-- 基础 -->
+        <!-- 基础依赖 -->
         <dependency>
             <groupId>cn.imadc.application</groupId>
             <artifactId>base-skeleton-dependency</artifactId>
+            <version>${base.skeleton.dependency.version}</version>
+        </dependency>
+        <!-- 数据结构体 -->
+        <dependency>
+            <groupId>cn.imadc.application</groupId>
+            <artifactId>base-data-structure</artifactId>
             <version>${base.skeleton.dependency.version}</version>
         </dependency>
         <!-- netty -->
@@ -35,8 +41,9 @@
         </dependency>
         <!--lettuce-->
         <dependency>
-            <groupId>io.lettuce</groupId>
-            <artifactId>lettuce-core</artifactId>
+            <groupId>cn.imadc.application</groupId>
+            <artifactId>base-lettuce</artifactId>
+            <version>${base.skeleton.dependency.version}</version>
         </dependency>
     </dependencies>
 
