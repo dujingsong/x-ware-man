@@ -3,6 +3,7 @@ package cn.imadc.application.xwareman;
 import cn.imadc.application.base.data.structure.RedisParser;
 import cn.imadc.application.base.data.structure.RedisSentinel;
 import cn.imadc.application.base.data.structure.RedisSentinelMaster;
+import cn.imadc.application.base.data.structure.RedisSentinelSlave;
 import cn.imadc.application.base.lettuce.RedisClient;
 import cn.imadc.application.base.lettuce.RedisSentinelExtensionCommands;
 import cn.imadc.application.base.toolkit.serialization.JsonUtil;
@@ -41,12 +42,12 @@ public class XWareManInstance {
 //        System.out.println(response);
 //
 //        remotingClient.shutdown();
-//    }
+//    }=
 
     public static void main(String[] args) throws InterruptedException {
 
-        String nodeHost = "192.168.137.200", sentinelHost = "192.168.137.203";
-        int nodePort = 6379, sentinelPort = 26379;
+        String nodeHost = "192.168.137.200", sentinelHost = "10.100.0.92";
+        int nodePort = 6379, sentinelPort = 51111;
 
         RedisClient redisClient = new RedisClient();
 
@@ -55,9 +56,11 @@ public class XWareManInstance {
         List<Map<String, String>> masters = sentinelCommands.masters();
         List<RedisSentinelMaster> sentinelMasters = RedisParser.parseSentinelMasters(JsonUtil.objectToJson(masters));
 
+        List<Map<String, String>> slaves = sentinelCommands.slaves(sentinelMasters.get(0).getName());
+        List<RedisSentinelSlave> sentinelSlaves = RedisParser.parseSentinelSlaves(JsonUtil.objectToJson(slaves));
 
-        RedisSentinelExtensionCommands redisSentinelExtensionCommands = redisClient.getRedisSentinelExtensionCommands(sentinelHost, sentinelPort, null);
-        List<Map<String, String>> sentinels = redisSentinelExtensionCommands.sentinelSentinels("master200");
+        RedisSentinelExtensionCommands sentinelExtensionCommands = redisClient.getRedisSentinelExtensionCommands(sentinelHost, sentinelPort, null);
+        List<Map<String, String>> sentinels = sentinelExtensionCommands.sentinelSentinels(sentinelMasters.get(0).getName());
 
         List<RedisSentinel> redisSentinels = RedisParser.parseSentinels(JsonUtil.objectToJson(sentinels));
 

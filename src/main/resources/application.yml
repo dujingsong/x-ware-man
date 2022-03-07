@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: @project.artifactId@
+  profiles:
+    active: dev
+
+server:
+  port: 8080
+
+app:
+  ctx-timeout: 12
+  ctx-timeout-unit: HOURS
+  avatar-path: avatar/

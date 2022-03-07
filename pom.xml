@@ -39,11 +39,16 @@
             <artifactId>base-netty</artifactId>
             <version>${base.skeleton.dependency.version}</version>
         </dependency>
-        <!--lettuce-->
+        <!-- lettuce -->
         <dependency>
             <groupId>cn.imadc.application</groupId>
             <artifactId>base-lettuce</artifactId>
             <version>${base.skeleton.dependency.version}</version>
+        </dependency>
+        <!-- hutool -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
         </dependency>
     </dependencies>
 
