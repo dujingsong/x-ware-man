@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.imadc.application.xwareman.module.cluster.mapper.ClusterMapper">
+
+    <select id="query" resultType="cn.imadc.application.xwareman.module.cluster.dto.data.ClusterQueryData">
+        SELECT t.*
+        FROM cluster t
+                 LEFT JOIN instance_redis ir ON ir.cluster_id = t.id
+            AND ir.del_flag = #{condition.delFlag}
+                 LEFT JOIN instance i ON i.id = ir.instance_id
+            AND i.del_flag = #{condition.delFlag}
+                 LEFT JOIN zone z ON z.id = i.zone_id
+            AND z.del_flag = #{condition.delFlag}
+        WHERE t.del_flag = #{condition.delFlag}
+        GROUP BY t.id
+    </select>
+</mapper>

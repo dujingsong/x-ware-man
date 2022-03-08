@@ -22,18 +22,24 @@ public class MybatisPlusMetaHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         RequestContext currentContext = RequestContext.getCurrentContext();
 
-        this.setFieldValByName(Constant.CREATE_BY, currentContext.get(ReqCtxConstant.NAME, String.class), metaObject);
-        this.setFieldValByName(Constant.CREATE_BY_ID, currentContext.get(ReqCtxConstant.ID, Long.class), metaObject);
+        String name = currentContext.get(ReqCtxConstant.NAME, String.class, Constant.SYSTEM_NAME);
+        Long id = currentContext.get(ReqCtxConstant.ID, Long.class, Constant.SYSTEM_ID);
 
-        this.setFieldValByName(Constant.UPDATE_BY, currentContext.get(ReqCtxConstant.NAME, String.class), metaObject);
-        this.setFieldValByName(Constant.UPDATE_BY_ID, currentContext.get(ReqCtxConstant.ID, Long.class), metaObject);
+        this.setFieldValByName(Constant.CREATE_BY_F, name, metaObject);
+        this.setFieldValByName(Constant.CREATE_BY_ID_F, id, metaObject);
+
+        this.setFieldValByName(Constant.UPDATE_BY_F, name, metaObject);
+        this.setFieldValByName(Constant.UPDATE_BY_ID_F, id, metaObject);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         RequestContext currentContext = RequestContext.getCurrentContext();
 
-        this.setFieldValByName(Constant.UPDATE_BY, currentContext.get(ReqCtxConstant.NAME, String.class), metaObject);
-        this.setFieldValByName(Constant.UPDATE_BY_ID, currentContext.get(ReqCtxConstant.ID, Long.class), metaObject);
+        String name = currentContext.get(ReqCtxConstant.NAME, String.class, Constant.SYSTEM_NAME);
+        Long id = currentContext.get(ReqCtxConstant.ID, Long.class, Constant.SYSTEM_ID);
+
+        this.setFieldValByName(Constant.UPDATE_BY_F, name, metaObject);
+        this.setFieldValByName(Constant.UPDATE_BY_ID_F, id, metaObject);
     }
 }

@@ -6,9 +6,26 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
+/**
+ * <p>
+ * 实例表 查询参数
+ * </p>
+ *
+ * @author 杜劲松
+ * @since 2022-03-08
+ */
 @Getter
 @Setter
 public class InstanceFindReqDTO extends BaseSearchDTO implements Serializable {
 
+    /**
+     * ip
+     */
+    private String ip;
+
+    /**
+     * 端口
+     */
+    private Integer port;
 
 }

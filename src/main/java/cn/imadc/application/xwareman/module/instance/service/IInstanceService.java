@@ -55,4 +55,12 @@ public interface IInstanceService extends IBaseMPService<Instance> {
      * @return 结果
      */
     ResponseW discoverRedis(DiscoveryRedisReqDTO reqDTO) throws InterruptedException;
+
+    /**
+     * 添加
+     *
+     * @param instance 参数
+     * @return 结果
+     */
+    Instance addIfNotExist(Instance instance);
 }

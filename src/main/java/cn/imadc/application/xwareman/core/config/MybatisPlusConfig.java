@@ -1,8 +1,6 @@
 package cn.imadc.application.xwareman.core.config;
 
-import cn.imadc.application.xwareman.core.data.persistence.MybatisPlusMetaHandler;
 import com.baomidou.mybatisplus.annotation.DbType;
-import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.springframework.context.annotation.Bean;
@@ -24,12 +22,5 @@ public class MybatisPlusConfig {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
         return interceptor;
-    }
-
-    @Bean
-    public GlobalConfig globalConfig() {
-        GlobalConfig globalConfig = new GlobalConfig();
-        globalConfig.setMetaObjectHandler(new MybatisPlusMetaHandler());
-        return globalConfig;
     }
 }

@@ -3,26 +3,24 @@ package cn.imadc.application.xwareman.module.instance.entity;
 import cn.imadc.application.base.common.persistence.BaseEntity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import lombok.AllArgsConstructor;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
 
 /**
  * <p>
- * 实例表
+ * redis实例表
  * </p>
  *
  * @author 杜劲松
- * @since 2022-03-07
+ * @since 2022-03-08
  */
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-public class Instance extends BaseEntity implements Serializable {
+@TableName("instance_redis")
+public class InstanceRedis extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,41 +31,42 @@ public class Instance extends BaseEntity implements Serializable {
     private Long id;
 
     /**
-     * ip
-     */
-    private String ip;
-
-    /**
-     * 区域ID
-     */
-    private Long zoneId;
-
-    /**
-     * cpu个数
-     */
-    private Integer cpu;
-
-    /**
-     * 内存b
-     */
-    private Long memory;
-
-    /**
-     * 磁盘b
-     */
-    private Long disk;
-
-    /**
-     * 名称
-     */
-    private String name;
-
-    /**
      * 备注
      */
     private String notes;
 
-    public Instance(String ip) {
-        this.ip = ip;
-    }
+    /**
+     * 端口
+     */
+    private Integer port;
+
+    /**
+     * 0：主节点；1：从节点；2：哨兵节点
+     */
+    private Integer type;
+
+    /**
+     * master name
+     */
+    private String masterName;
+
+    /**
+     * 节点密码
+     */
+    private String password;
+
+    /**
+     * 最大内存b
+     */
+    private Long maxMemory;
+
+    /**
+     * 实例ID
+     */
+    private Long instanceId;
+
+    /**
+     * 集群ID
+     */
+    private Long clusterId;
 }

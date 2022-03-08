@@ -21,6 +21,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.lettuce.core.sentinel.api.sync.RedisSentinelCommands;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -55,6 +56,11 @@ public class InstanceServiceImpl extends BaseMPServiceImpl<InstanceMapper, Insta
     private QueryWrapper<Instance> buildQueryWrapper(InstanceFindReqDTO reqDTO) {
         QueryWrapper<Instance> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(Constant.DEL_FLAG, Constant.NOT_DEL_VAL);
+
+        // ip
+        if (StringUtils.isNotBlank(reqDTO.getIp())) {
+            queryWrapper.eq("ip", reqDTO.getIp());
+        }
 
         return queryWrapper;
     }
@@ -146,5 +152,17 @@ public class InstanceServiceImpl extends BaseMPServiceImpl<InstanceMapper, Insta
         discoveryRedisResDTO.setRedisInfoData(redisInfoDataList);
 
         return ResponseW.success(discoveryRedisResDTO);
+    }
+
+    @Override
+    public Instance addIfNotExist(Instance instance) {
+        InstanceFindReqDTO instanceFindReqDTO = new InstanceFindReqDTO();
+        instanceFindReqDTO.setIp(instance.getIp());
+        QueryWrapper<Instance> queryWrapper = buildQueryWrapper(instanceFindReqDTO);
+        Instance existInstance = getOne(queryWrapper);
+        if (null != existInstance) return existInstance;
+
+        add(instance);
+        return instance;
     }
 }

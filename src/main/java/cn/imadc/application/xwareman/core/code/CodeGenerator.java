@@ -21,12 +21,12 @@ public class CodeGenerator {
     static String OUTPUT_DIR = "D://codeGenerate";
 
     // 指定表名
-    static String TABLE_NAME = "instance";
+    static String TABLE_NAME = "cluster";
 
     // 代码所在的包名（注意这里不要填写最后一级报名）
     static String PACKAGE_NAME = "cn.imadc.application.xwareman.module";
     // 代码所在的包名，最后一级包名
-    static String MODULE_NAME = "instance";
+    static String MODULE_NAME = "cluster";
     // 注释上的作者
     static String AUTHOR = "杜劲松";
 

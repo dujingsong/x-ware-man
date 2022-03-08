@@ -1,4 +1,4 @@
-package cn.imadc.application.xwareman.module.zone.entity;
+package cn.imadc.application.xwareman.module.cluster.entity;
 
 import cn.imadc.application.base.common.persistence.BaseEntity;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -10,15 +10,15 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 
+ * 集群表
  * </p>
  *
  * @author 杜劲松
- * @since 2022-03-07
+ * @since 2022-03-08
  */
 @Getter
 @Setter
-public class Zone extends BaseEntity implements Serializable {
+public class Cluster extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,7 +29,7 @@ public class Zone extends BaseEntity implements Serializable {
     private Long id;
 
     /**
-     * 区域名称
+     * 名称
      */
     private String name;
 
