@@ -3,6 +3,7 @@ package cn.imadc.application.xwareman.module.instance.service;
 import cn.imadc.application.base.common.response.ResponseW;
 import cn.imadc.application.base.mybatisplus.repository.IBaseMPService;
 import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisFindReqDTO;
+import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisQueryClusterInfoReqDTO;
 import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisRegisterReqDTO;
 import cn.imadc.application.xwareman.module.instance.entity.InstanceRedis;
 
@@ -55,4 +56,12 @@ public interface IInstanceRedisService extends IBaseMPService<InstanceRedis> {
      * @return 结果
      */
     ResponseW register(InstanceRedisRegisterReqDTO reqDTO);
+
+    /**
+     * 查询redis集群信息
+     *
+     * @param reqDTO 参数
+     * @return 结果
+     */
+    ResponseW queryClusterInfo(InstanceRedisQueryClusterInfoReqDTO reqDTO);
 }

@@ -44,7 +44,7 @@ public class CredentialServiceImpl implements ICredentialService {
         if (null == user) return ResponseW.error(Word.CREDENTIALS_ERROR);
 
         // 最后一次登录时间
-        userService.updateLastLoginTime(user.getId());
+        userService.updateLastLoginTime(user.getId(), user.getCurrentLoginTime());
 
         String token = JWT.generate(ST.USER, user.getId(), appProp.getCtxTimeout(), appProp.getCtxTimeoutUnit());
         UserLoginResDTO userLoginResDTO = new UserLoginResDTO();

@@ -67,6 +67,11 @@ public class User extends BaseEntity implements Serializable {
     private LocalDateTime lastLoginTime;
 
     /**
+     * 本次登录时间
+     */
+    private LocalDateTime currentLoginTime;
+
+    /**
      * 头像
      */
     private String avatar;

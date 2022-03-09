@@ -1,8 +1,13 @@
 package cn.imadc.application.xwareman.module.instance.mapper;
 
+import cn.imadc.application.xwareman.module.instance.dto.data.InstanceRedisClusterInfoData;
+import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisQueryClusterInfoReqDTO;
 import cn.imadc.application.xwareman.module.instance.entity.InstanceRedis;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +20,11 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface InstanceRedisMapper extends BaseMapper<InstanceRedis> {
 
+    /**
+     * 查询redis集群信息
+     *
+     * @param reqDTO 参数
+     * @return 结果
+     */
+    List<InstanceRedisClusterInfoData> queryClusterInfo(@Param("condition") InstanceRedisQueryClusterInfoReqDTO reqDTO);
 }

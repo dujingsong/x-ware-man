@@ -7,6 +7,8 @@ import cn.imadc.application.xwareman.basic.rbac.user.dto.request.UserUpdatePwdRe
 import cn.imadc.application.xwareman.basic.rbac.user.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+
 /**
  * <p>
  * 用户表 服务类
@@ -52,10 +54,11 @@ public interface IUserService extends IBaseMPService<User> {
     /**
      * 更新最后一次登录时间
      *
-     * @param id 数据ID
+     * @param id            数据ID
+     * @param lastLoginTime 上次登陆时间
      * @return 结果
      */
-    ResponseW updateLastLoginTime(Long id);
+    ResponseW updateLastLoginTime(Long id, LocalDateTime lastLoginTime);
 
     /**
      * 更新基本信息

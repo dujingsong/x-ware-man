@@ -12,7 +12,9 @@ import cn.imadc.application.xwareman.module.cluster.entity.Cluster;
 import cn.imadc.application.xwareman.module.cluster.service.IClusterService;
 import cn.imadc.application.xwareman.module.instance.dto.data.DiscoveryRedisRegisterData;
 import cn.imadc.application.xwareman.module.instance.dto.data.DiscoveryRedisRegisterInfoData;
+import cn.imadc.application.xwareman.module.instance.dto.data.InstanceRedisClusterInfoData;
 import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisFindReqDTO;
+import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisQueryClusterInfoReqDTO;
 import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisRegisterReqDTO;
 import cn.imadc.application.xwareman.module.instance.entity.Instance;
 import cn.imadc.application.xwareman.module.instance.entity.InstanceRedis;
@@ -47,6 +49,7 @@ public class InstanceRedisServiceImpl extends BaseMPServiceImpl<InstanceRedisMap
     private final IInstanceService instanceService;
     private final RedisClient redisClient;
     private final IClusterService clusterService;
+    private final InstanceRedisMapper instanceRedisMapper;
 
     @Override
     public ResponseW find(InstanceRedisFindReqDTO reqDTO) {
@@ -182,5 +185,11 @@ public class InstanceRedisServiceImpl extends BaseMPServiceImpl<InstanceRedisMap
 
         String message = String.format("%s已存在，ip：%s，端口：%s，masterName：%s", type.getDesc(), ip, port, masterName);
         throw new BizException(message);
+    }
+
+    @Override
+    public ResponseW queryClusterInfo(InstanceRedisQueryClusterInfoReqDTO reqDTO) {
+        List<InstanceRedisClusterInfoData> clusterInfoData = instanceRedisMapper.queryClusterInfo(reqDTO);
+        return ResponseW.success(clusterInfoData);
     }
 }

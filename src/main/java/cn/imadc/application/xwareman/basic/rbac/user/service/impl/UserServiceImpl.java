@@ -134,9 +134,11 @@ public class UserServiceImpl extends BaseMPServiceImpl<UserMapper, User> impleme
 
     @Transactional
     @Override
-    public ResponseW updateLastLoginTime(Long id) {
+    public ResponseW updateLastLoginTime(Long id, LocalDateTime lastLoginTime) {
         User user = new User();
-        user.setLastLoginTime(LocalDateTime.now());
+        if (null == lastLoginTime) lastLoginTime = LocalDateTime.now();
+        user.setLastLoginTime(lastLoginTime);
+        user.setCurrentLoginTime(LocalDateTime.now());
 
         UpdateWrapper<User> userUpdateWrapper = new UpdateWrapper<>();
         userUpdateWrapper.eq("id", id);
