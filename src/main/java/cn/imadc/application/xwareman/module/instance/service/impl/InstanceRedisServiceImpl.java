@@ -13,6 +13,7 @@ import cn.imadc.application.xwareman.module.cluster.service.IClusterService;
 import cn.imadc.application.xwareman.module.instance.dto.data.DiscoveryRedisRegisterData;
 import cn.imadc.application.xwareman.module.instance.dto.data.DiscoveryRedisRegisterInfoData;
 import cn.imadc.application.xwareman.module.instance.dto.data.InstanceRedisClusterInfoData;
+import cn.imadc.application.xwareman.module.instance.dto.data.InstanceRedisData;
 import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisFindReqDTO;
 import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisQueryClusterInfoReqDTO;
 import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisRegisterReqDTO;
@@ -60,6 +61,12 @@ public class InstanceRedisServiceImpl extends BaseMPServiceImpl<InstanceRedisMap
         Page<InstanceRedis> page = new Page<>(reqDTO.getPageNo(), reqDTO.getPageSize(), true);
         IPage<InstanceRedis> pageData = page(page, queryWrapper);
         return ResponseW.success(pageData);
+    }
+
+    @Override
+    public List<InstanceRedis> list(InstanceRedisFindReqDTO reqDTO) {
+        QueryWrapper<InstanceRedis> queryWrapper = buildQueryWrapper(reqDTO);
+        return list(queryWrapper);
     }
 
     private QueryWrapper<InstanceRedis> buildQueryWrapper(InstanceRedisFindReqDTO reqDTO) {
@@ -145,28 +152,10 @@ public class InstanceRedisServiceImpl extends BaseMPServiceImpl<InstanceRedisMap
         instanceRedis.setInstanceId(instance.getId());
         instanceRedis.setClusterId(clusterId);
 
-        try {
-            String info;
-            if (redisNode.equals(RedisNode.SENTINEL)) {
-                RedisSentinelCommands<String, String> sentinelCommands = redisClient.getRedisSentinelCommands(
-                        nodeData.getIp(), nodeData.getPort(), password);
-
-                info = sentinelCommands.info();
-            } else {
-                RedisCommands<String, String> redisCommands = redisClient.getRedisCommands(nodeData.getIp()
-                        , nodeData.getPort(), password);
-
-                info = redisCommands.info();
-            }
-
-            RedisInfo redisInfo = RedisParser.parseRedisInfo(info);
-            if (!redisNode.equals(RedisNode.SENTINEL)) {
-                RedisInfo.Memory memory = redisInfo.getMemory();
-                instanceRedis.setMaxMemory(memory.getMaxMemory());
-            }
-
-        } catch (InterruptedException e) {
-            throw new BizException("连接redis节点获取信息失败");
+        RedisInfo redisInfo = info(redisNode, nodeData.getIp(), nodeData.getPort(), password);
+        if (!redisNode.equals(RedisNode.SENTINEL)) {
+            RedisInfo.Memory memory = redisInfo.getMemory();
+            instanceRedis.setMaxMemory(memory.getMaxMemory());
         }
 
         add(instanceRedis);
@@ -191,5 +180,32 @@ public class InstanceRedisServiceImpl extends BaseMPServiceImpl<InstanceRedisMap
     public ResponseW queryClusterInfo(InstanceRedisQueryClusterInfoReqDTO reqDTO) {
         List<InstanceRedisClusterInfoData> clusterInfoData = instanceRedisMapper.queryClusterInfo(reqDTO);
         return ResponseW.success(clusterInfoData);
+    }
+
+    @Override
+    public RedisInfo info(RedisNode redisNode, String ip, int port, String password) {
+        String info;
+        try {
+
+            if (redisNode.equals(RedisNode.SENTINEL)) {
+                RedisSentinelCommands<String, String> sentinelCommands = redisClient.getRedisSentinelCommands(
+                        ip, port, password);
+
+                info = sentinelCommands.info();
+            } else {
+                RedisCommands<String, String> redisCommands = redisClient.getRedisCommands(ip, port, password);
+
+                info = redisCommands.info();
+            }
+        } catch (InterruptedException e) {
+            throw new BizException("连接redis节点获取信息失败");
+        }
+
+        return RedisParser.parseRedisInfo(info);
+    }
+
+    @Override
+    public List<InstanceRedisData> listInstanceRedisData(InstanceRedisFindReqDTO reqDTO) {
+        return instanceRedisMapper.listInstanceRedisData(reqDTO);
     }
 }

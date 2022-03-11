@@ -1,11 +1,16 @@
 package cn.imadc.application.xwareman.module.instance.service;
 
 import cn.imadc.application.base.common.response.ResponseW;
+import cn.imadc.application.base.data.structure.RedisInfo;
+import cn.imadc.application.base.data.structure.RedisNode;
 import cn.imadc.application.base.mybatisplus.repository.IBaseMPService;
+import cn.imadc.application.xwareman.module.instance.dto.data.InstanceRedisData;
 import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisFindReqDTO;
 import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisQueryClusterInfoReqDTO;
 import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisRegisterReqDTO;
 import cn.imadc.application.xwareman.module.instance.entity.InstanceRedis;
+
+import java.util.List;
 
 /**
  * <p>
@@ -24,6 +29,14 @@ public interface IInstanceRedisService extends IBaseMPService<InstanceRedis> {
      * @return 结果
      */
     ResponseW find(InstanceRedisFindReqDTO reqDTO);
+
+    /**
+     * 查询
+     *
+     * @param reqDTO 参数
+     * @return 结果
+     */
+    List<InstanceRedis> list(InstanceRedisFindReqDTO reqDTO);
 
     /**
      * 添加
@@ -64,4 +77,23 @@ public interface IInstanceRedisService extends IBaseMPService<InstanceRedis> {
      * @return 结果
      */
     ResponseW queryClusterInfo(InstanceRedisQueryClusterInfoReqDTO reqDTO);
+
+    /**
+     * 获取节点的info信息
+     *
+     * @param redisNode 节点类型
+     * @param ip        ip
+     * @param port      端口
+     * @param password  密码
+     * @return 节点的info信息
+     */
+    RedisInfo info(RedisNode redisNode, String ip, int port, String password);
+
+    /**
+     * 查询
+     *
+     * @param reqDTO 参数
+     * @return 结果
+     */
+    List<InstanceRedisData> listInstanceRedisData(InstanceRedisFindReqDTO reqDTO);
 }

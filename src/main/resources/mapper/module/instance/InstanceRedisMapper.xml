@@ -22,4 +22,13 @@
         WHERE t.del_flag = #{condition.delFlag}
           AND t.cluster_id = #{condition.clusterId}
     </select>
+    <select id="listInstanceRedisData"
+            resultType="cn.imadc.application.xwareman.module.instance.dto.data.InstanceRedisData">
+        SELECT t.*,
+               i.ip
+        FROM instance_redis t
+                 LEFT JOIN instance i ON i.id = t.instance_id
+            AND i.del_flag = #{condition.delFlag}
+        WHERE t.del_flag = #{condition.delFlag}
+    </select>
 </mapper>
