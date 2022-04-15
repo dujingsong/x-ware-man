@@ -60,6 +60,14 @@ public class InstanceItemCollectTask {
                 itemRedis.setConnectedClients(clients.getConnectedClients());
                 itemRedis.setBlockedClients(clients.getBlockedClients());
 
+                RedisInfo.Stats stats = redisInfo.getStats();
+                itemRedis.setTotalCommandsProcessed(stats.getTotalCommandsProcessed());
+                itemRedis.setInstantaneousInputKbps(stats.getInstantaneousInputKbps());
+                itemRedis.setInstantaneousOutputKbps(stats.getInstantaneousOutputKbps());
+                itemRedis.setExpiredKeys(stats.getExpiredKeys());
+                itemRedis.setEvictedKeys(stats.getEvictedKeys());
+                itemRedis.setInstantaneousOpsPerSec(stats.getInstantaneousOpsPerSec());
+
                 itemRedisService.add(itemRedis);
 
             } catch (Exception exception) {
