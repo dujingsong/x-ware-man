@@ -36,6 +36,16 @@ public class InstanceRedis extends BaseEntity implements Serializable {
     private String notes;
 
     /**
+     * 实例ID
+     */
+    private Long instanceId;
+
+    /**
+     * 集群ID
+     */
+    private Long clusterId;
+
+    /**
      * 端口
      */
     private Integer port;
@@ -61,12 +71,38 @@ public class InstanceRedis extends BaseEntity implements Serializable {
     private Long maxMemory;
 
     /**
-     * 实例ID
+     * 版本信息
      */
-    private Long instanceId;
+    private String redisVersion;
 
     /**
-     * 集群ID
+     * 进程ID
      */
-    private Long clusterId;
+    private Integer processId;
+
+    /**
+     * run_id
+     */
+    private String runId;
+
+    /**
+     * 启动时间（秒）
+     */
+    private Long uptimeInSeconds;
+
+    /**
+     * hz
+     */
+    private Integer hz;
+
+    /**
+     * 启动路径
+     */
+    private String executable;
+
+    /**
+     * 配置文件所在路径
+     */
+    private String configFile;
+
 }

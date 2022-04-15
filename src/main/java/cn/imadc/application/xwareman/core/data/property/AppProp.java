@@ -41,4 +41,9 @@ public class AppProp {
      */
     private String avatarPath;
 
+    // -----------------------------------------------文件相关-----------------------------------------------
+    /**
+     * 定时任务核心线程数
+     */
+    private Integer scheduledCorePoolSize;
 }

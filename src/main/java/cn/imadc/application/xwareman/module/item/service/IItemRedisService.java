@@ -1,7 +1,9 @@
 package cn.imadc.application.xwareman.module.item.service;
 
 import cn.imadc.application.base.common.response.ResponseW;
+import cn.imadc.application.base.data.structure.redis.RedisInfo;
 import cn.imadc.application.base.mybatisplus.repository.IBaseMPService;
+import cn.imadc.application.xwareman.module.instance.dto.data.InstanceRedisData;
 import cn.imadc.application.xwareman.module.item.dto.request.ItemRedisFindReqDTO;
 import cn.imadc.application.xwareman.module.item.entity.ItemRedis;
 
@@ -46,4 +48,12 @@ public interface IItemRedisService extends IBaseMPService<ItemRedis> {
      * @return 结果
      */
     ResponseW delete(ItemRedis itemRedis);
+
+    /**
+     * redis监控项收集
+     *
+     * @param instanceRedisData redis的节点信息
+     * @param redisInfo         redis的info信息
+     */
+    void storeItemRedis(InstanceRedisData instanceRedisData, RedisInfo redisInfo);
 }

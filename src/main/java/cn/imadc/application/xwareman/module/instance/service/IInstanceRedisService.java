@@ -1,10 +1,11 @@
 package cn.imadc.application.xwareman.module.instance.service;
 
 import cn.imadc.application.base.common.response.ResponseW;
-import cn.imadc.application.base.data.structure.RedisInfo;
-import cn.imadc.application.base.data.structure.RedisNode;
+import cn.imadc.application.base.data.structure.redis.RedisInfo;
+import cn.imadc.application.base.data.structure.redis.RedisNode;
 import cn.imadc.application.base.mybatisplus.repository.IBaseMPService;
 import cn.imadc.application.xwareman.module.instance.dto.data.InstanceRedisData;
+import cn.imadc.application.xwareman.module.instance.dto.request.DiscoveryRedisReqDTO;
 import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisFindReqDTO;
 import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisQueryClusterInfoReqDTO;
 import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisRegisterReqDTO;
@@ -63,6 +64,14 @@ public interface IInstanceRedisService extends IBaseMPService<InstanceRedis> {
     ResponseW delete(InstanceRedis instanceRedis);
 
     /**
+     * redis节点发现
+     *
+     * @param reqDTO 参数
+     * @return 结果
+     */
+    ResponseW discoverRedis(DiscoveryRedisReqDTO reqDTO) throws InterruptedException;
+
+    /**
      * 注册redis节点
      *
      * @param reqDTO 参数
@@ -96,4 +105,12 @@ public interface IInstanceRedisService extends IBaseMPService<InstanceRedis> {
      * @return 结果
      */
     List<InstanceRedisData> listInstanceRedisData(InstanceRedisFindReqDTO reqDTO);
+
+    /**
+     * 刷新节点信息
+     *
+     * @param instanceRedisData 节点
+     * @param redisInfo         节点的info信息
+     */
+    void refreshInfo(InstanceRedisData instanceRedisData, RedisInfo redisInfo);
 }

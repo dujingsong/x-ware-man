@@ -1,13 +1,9 @@
 package cn.imadc.application.xwareman.core.task;
 
-import cn.imadc.application.base.data.structure.RedisInfo;
-import cn.imadc.application.base.data.structure.RedisNode;
-import cn.imadc.application.base.lettuce.RedisClient;
+import cn.imadc.application.xwareman.core.component.InstanceItemRedisCollectHandler;
 import cn.imadc.application.xwareman.module.instance.dto.data.InstanceRedisData;
 import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisFindReqDTO;
 import cn.imadc.application.xwareman.module.instance.service.IInstanceRedisService;
-import cn.imadc.application.xwareman.module.item.entity.ItemRedis;
-import cn.imadc.application.xwareman.module.item.service.IItemRedisService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,7 +13,7 @@ import java.util.List;
 
 /**
  * <p>
- *
+ * 监控项目收集定时任务
  * </p>
  *
  * @author 杜劲松
@@ -28,51 +24,15 @@ import java.util.List;
 @Component
 public class InstanceItemCollectTask {
 
-    private final RedisClient redisClient;
     private final IInstanceRedisService instanceRedisService;
-    private final IItemRedisService itemRedisService;
+    private final InstanceItemRedisCollectHandler instanceItemRedisCollectHandler;
 
     @Scheduled(initialDelay = 5 * 1000, fixedDelay = 1000)
     public void collectRedisInstanceItem() {
 
-        InstanceRedisFindReqDTO instanceRedisFindReqDTO = new InstanceRedisFindReqDTO();
-        List<InstanceRedisData> instanceRedisData = instanceRedisService.listInstanceRedisData(instanceRedisFindReqDTO);
+        InstanceRedisFindReqDTO findReqDTO = new InstanceRedisFindReqDTO();
+        List<InstanceRedisData> instanceRedisData = instanceRedisService.listInstanceRedisData(findReqDTO);
 
-        for (InstanceRedisData theInstanceRedisData : instanceRedisData) {
-            try {
-
-                RedisNode redisNode = RedisNode.values()[theInstanceRedisData.getType()];
-                String ip = theInstanceRedisData.getIp(), password = theInstanceRedisData.getPassword();
-                int port = theInstanceRedisData.getPort();
-
-                RedisInfo redisInfo = instanceRedisService.info(redisNode, ip, port, password);
-
-                ItemRedis itemRedis = new ItemRedis();
-                itemRedis.setInstanceId(theInstanceRedisData.getInstanceId());
-                itemRedis.setInstanceRedisId(theInstanceRedisData.getId());
-
-                if (!redisNode.equals(RedisNode.SENTINEL)) {
-                    RedisInfo.Memory memory = redisInfo.getMemory();
-                    itemRedis.setUsedMemory(memory.getUsedMemory());
-                }
-
-                RedisInfo.Clients clients = redisInfo.getClients();
-                itemRedis.setConnectedClients(clients.getConnectedClients());
-                itemRedis.setBlockedClients(clients.getBlockedClients());
-
-                RedisInfo.Stats stats = redisInfo.getStats();
-                itemRedis.setTotalCommandsProcessed(stats.getTotalCommandsProcessed());
-                itemRedis.setInstantaneousInputKbps(stats.getInstantaneousInputKbps());
-                itemRedis.setInstantaneousOutputKbps(stats.getInstantaneousOutputKbps());
-                itemRedis.setExpiredKeys(stats.getExpiredKeys());
-                itemRedis.setEvictedKeys(stats.getEvictedKeys());
-                itemRedis.setInstantaneousOpsPerSec(stats.getInstantaneousOpsPerSec());
-
-                itemRedisService.add(itemRedis);
-
-            } catch (Exception exception) {
-                log.error("collectRedisInstanceItem", exception);
-            }
-        }
+        instanceRedisData.forEach(instanceItemRedisCollectHandler::handle);
     }
 }

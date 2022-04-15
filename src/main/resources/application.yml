@@ -11,3 +11,4 @@ app:
   ctx-timeout: 12
   ctx-timeout-unit: HOURS
   avatar-path: avatar/
+  scheduled-core-pool-size: 10

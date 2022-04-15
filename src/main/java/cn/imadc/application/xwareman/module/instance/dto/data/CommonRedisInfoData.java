@@ -1,6 +1,6 @@
 package cn.imadc.application.xwareman.module.instance.dto.data;
 
-import cn.imadc.application.base.data.structure.RedisNode;
+import cn.imadc.application.base.data.structure.redis.RedisNode;
 import lombok.Getter;
 import lombok.Setter;
 

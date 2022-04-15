@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * <p>
- *
+ * redis节点注册请求参数
  * </p>
  *
  * @author 杜劲松

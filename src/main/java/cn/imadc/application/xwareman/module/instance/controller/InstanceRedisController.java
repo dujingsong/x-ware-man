@@ -4,6 +4,7 @@ package cn.imadc.application.xwareman.module.instance.controller;
 import cn.imadc.application.base.common.enums.AuthType;
 import cn.imadc.application.base.common.response.ResponseW;
 import cn.imadc.application.xwareman.core.data.annoations.Api;
+import cn.imadc.application.xwareman.module.instance.dto.request.DiscoveryRedisReqDTO;
 import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisFindReqDTO;
 import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisQueryClusterInfoReqDTO;
 import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisRegisterReqDTO;
@@ -72,6 +73,18 @@ public class InstanceRedisController {
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     public ResponseW delete(@RequestBody InstanceRedis instanceRedis) {
         return instanceRedisService.delete(instanceRedis);
+    }
+
+    /**
+     * redis节点发现
+     *
+     * @param reqDTO 参数
+     * @return 结果
+     */
+    @Api(authType = AuthType.ANONYMOUS)
+    @RequestMapping(value = "discover/redis", method = RequestMethod.POST)
+    public ResponseW discoverRedis(@RequestBody DiscoveryRedisReqDTO reqDTO) throws InterruptedException {
+        return instanceRedisService.discoverRedis(reqDTO);
     }
 
     /**

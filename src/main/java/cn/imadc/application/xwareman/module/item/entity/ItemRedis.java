@@ -68,12 +68,12 @@ public class ItemRedis extends BaseEntity implements Serializable {
     /**
      * 入流量/s
      */
-    private Long instantaneousInputKbps;
+    private Double instantaneousInputKbps;
 
     /**
      * 出流量/s
      */
-    private Long instantaneousOutputKbps;
+    private Double instantaneousOutputKbps;
 
     /**
      * 过期的Key数量

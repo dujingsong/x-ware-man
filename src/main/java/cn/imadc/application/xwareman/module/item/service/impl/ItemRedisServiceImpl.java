@@ -1,8 +1,12 @@
 package cn.imadc.application.xwareman.module.item.service.impl;
 
 import cn.imadc.application.base.common.response.ResponseW;
+import cn.imadc.application.base.data.structure.redis.RedisInfo;
+import cn.imadc.application.base.data.structure.redis.RedisNode;
 import cn.imadc.application.base.mybatisplus.repository.impl.BaseMPServiceImpl;
 import cn.imadc.application.xwareman.core.data.constant.Constant;
+import cn.imadc.application.xwareman.core.data.constant.Word;
+import cn.imadc.application.xwareman.module.instance.dto.data.InstanceRedisData;
 import cn.imadc.application.xwareman.module.item.dto.request.ItemRedisFindReqDTO;
 import cn.imadc.application.xwareman.module.item.entity.ItemRedis;
 import cn.imadc.application.xwareman.module.item.mapper.ItemRedisMapper;
@@ -60,5 +64,57 @@ public class ItemRedisServiceImpl extends BaseMPServiceImpl<ItemRedisMapper, Ite
         userUpdateWrapper.eq("id", itemRedis.getId());
         userUpdateWrapper.set(Constant.DEL_FLAG, Constant.DEL_VAL);
         return update(userUpdateWrapper) ? ResponseW.success() : ResponseW.error();
+    }
+
+    @Override
+    public void storeItemRedis(InstanceRedisData instanceRedisData, RedisInfo redisInfo) {
+        try {
+
+            // 节点类型
+            RedisNode redisNode = RedisNode.values()[instanceRedisData.getType()];
+
+            // 取info信息中关心的参数构建监控项
+            ItemRedis itemRedis = new ItemRedis();
+            itemRedis.setInstanceId(instanceRedisData.getInstanceId());
+            itemRedis.setInstanceRedisId(instanceRedisData.getId());
+
+            // Server
+
+
+            // Clients
+            RedisInfo.Clients clients = redisInfo.getClients();
+            itemRedis.setConnectedClients(clients.getConnectedClients());
+            itemRedis.setBlockedClients(clients.getBlockedClients());
+
+            // Memory
+            if (!redisNode.equals(RedisNode.SENTINEL)) {
+                RedisInfo.Memory memory = redisInfo.getMemory();
+                itemRedis.setUsedMemory(memory.getUsedMemory());
+            }
+
+            // Persistence
+
+            // Stats
+            RedisInfo.Stats stats = redisInfo.getStats();
+            itemRedis.setTotalCommandsProcessed(stats.getTotalCommandsProcessed());
+            itemRedis.setInstantaneousInputKbps(stats.getInstantaneousInputKbps());
+            itemRedis.setInstantaneousOutputKbps(stats.getInstantaneousOutputKbps());
+            itemRedis.setExpiredKeys(stats.getExpiredKeys());
+            itemRedis.setEvictedKeys(stats.getEvictedKeys());
+            itemRedis.setInstantaneousOpsPerSec(stats.getInstantaneousOpsPerSec());
+
+            // Replication
+
+            // CPU
+
+            // Cluster
+
+            // Keyspace
+
+            add(itemRedis);
+
+        } catch (Exception exception) {
+            log.error(Word.BUILD_ITEM_REDIS_EXCEPTION, exception);
+        }
     }
 }

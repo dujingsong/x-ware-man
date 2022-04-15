@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * <p>
- * redis节点发现后的注册信息
+ * redis节点发现后的集群注册信息
  * </p>
  *
  * @author 杜劲松
