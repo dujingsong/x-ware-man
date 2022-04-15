@@ -79,6 +79,8 @@ public class ItemRedisServiceImpl extends BaseMPServiceImpl<ItemRedisMapper, Ite
             itemRedis.setInstanceRedisId(instanceRedisData.getId());
 
             // Server
+            RedisInfo.Server server = redisInfo.getServer();
+            itemRedis.setProcessId(server.getProcessId());
 
 
             // Clients

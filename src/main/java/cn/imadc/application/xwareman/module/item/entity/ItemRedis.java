@@ -46,6 +46,11 @@ public class ItemRedis extends BaseEntity implements Serializable {
     private Long instanceRedisId;
 
     /**
+     * 进程ID
+     */
+    private Integer processId;
+
+    /**
      * 内存使用量b
      */
     private Long usedMemory;
