@@ -11,12 +11,16 @@ import cn.imadc.application.xwareman.module.item.dto.request.ItemRedisFindReqDTO
 import cn.imadc.application.xwareman.module.item.entity.ItemRedis;
 import cn.imadc.application.xwareman.module.item.mapper.ItemRedisMapper;
 import cn.imadc.application.xwareman.module.item.service.IItemRedisService;
+import cn.imadc.application.xwareman.module.item.util.ItemRedisUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -29,6 +33,8 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Service
 public class ItemRedisServiceImpl extends BaseMPServiceImpl<ItemRedisMapper, ItemRedis> implements IItemRedisService {
+
+    private final ItemRedisMapper itemRedisMapper;
 
     @Override
     public ResponseW find(ItemRedisFindReqDTO reqDTO) {
@@ -74,49 +80,19 @@ public class ItemRedisServiceImpl extends BaseMPServiceImpl<ItemRedisMapper, Ite
             RedisNode redisNode = RedisNode.values()[instanceRedisData.getType()];
 
             // 取info信息中关心的参数构建监控项
-            ItemRedis itemRedis = new ItemRedis();
+            ItemRedis itemRedis = ItemRedisUtil.createItemRedis(redisNode, redisInfo);
             itemRedis.setInstanceId(instanceRedisData.getInstanceId());
             itemRedis.setInstanceRedisId(instanceRedisData.getId());
-
-            // Server
-            RedisInfo.Server server = redisInfo.getServer();
-            itemRedis.setProcessId(server.getProcessId());
-
-
-            // Clients
-            RedisInfo.Clients clients = redisInfo.getClients();
-            itemRedis.setConnectedClients(clients.getConnectedClients());
-            itemRedis.setBlockedClients(clients.getBlockedClients());
-
-            // Memory
-            if (!redisNode.equals(RedisNode.SENTINEL)) {
-                RedisInfo.Memory memory = redisInfo.getMemory();
-                itemRedis.setUsedMemory(memory.getUsedMemory());
-            }
-
-            // Persistence
-
-            // Stats
-            RedisInfo.Stats stats = redisInfo.getStats();
-            itemRedis.setTotalCommandsProcessed(stats.getTotalCommandsProcessed());
-            itemRedis.setInstantaneousInputKbps(stats.getInstantaneousInputKbps());
-            itemRedis.setInstantaneousOutputKbps(stats.getInstantaneousOutputKbps());
-            itemRedis.setExpiredKeys(stats.getExpiredKeys());
-            itemRedis.setEvictedKeys(stats.getEvictedKeys());
-            itemRedis.setInstantaneousOpsPerSec(stats.getInstantaneousOpsPerSec());
-
-            // Replication
-
-            // CPU
-
-            // Cluster
-
-            // Keyspace
 
             add(itemRedis);
 
         } catch (Exception exception) {
             log.error(Word.BUILD_ITEM_REDIS_EXCEPTION, exception);
         }
+    }
+
+    @Override
+    public List<Object> selectColAtSpecifiedTime(String col, LocalDateTime begin, LocalDateTime end) {
+        return itemRedisMapper.selectColAtSpecifiedTime(col, begin, end);
     }
 }

@@ -1,4 +1,4 @@
-package cn.imadc.application.xwareman.core.component;
+package cn.imadc.application.xwareman.core.component.collector;
 
 import cn.imadc.application.base.data.structure.redis.RedisInfo;
 import cn.imadc.application.base.data.structure.redis.RedisNode;

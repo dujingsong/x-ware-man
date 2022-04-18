@@ -2,4 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.imadc.application.xwareman.module.item.mapper.ItemRedisMapper">
 
+    <select id="selectColAtSpecifiedTime" resultType="java.lang.Object">
+        select #{col}
+        from item_redis
+        where create_time between #{begin} and #{end}
+    </select>
 </mapper>

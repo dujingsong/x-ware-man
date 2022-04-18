@@ -3,6 +3,10 @@ package cn.imadc.application.xwareman.module.item.mapper;
 import cn.imadc.application.xwareman.module.item.entity.ItemRedis;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +19,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ItemRedisMapper extends BaseMapper<ItemRedis> {
 
+    List<Object> selectColAtSpecifiedTime(@Param("col") String col, @Param("begin") LocalDateTime begin, @Param("end") LocalDateTime end);
 }

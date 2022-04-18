@@ -7,6 +7,9 @@ import cn.imadc.application.xwareman.module.instance.dto.data.InstanceRedisData;
 import cn.imadc.application.xwareman.module.item.dto.request.ItemRedisFindReqDTO;
 import cn.imadc.application.xwareman.module.item.entity.ItemRedis;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 /**
  * <p>
  * redis监控项数据搜集表 服务类
@@ -56,4 +59,14 @@ public interface IItemRedisService extends IBaseMPService<ItemRedis> {
      * @param redisInfo         redis的info信息
      */
     void storeItemRedis(InstanceRedisData instanceRedisData, RedisInfo redisInfo);
+
+    /**
+     * 查询指定时间范围内指定字段的数据
+     *
+     * @param col   字段名称
+     * @param begin 开始时间
+     * @param end   结束时间
+     * @return 符合调价的字段数据列表
+     */
+    List<Object> selectColAtSpecifiedTime(String col, LocalDateTime begin, LocalDateTime end);
 }

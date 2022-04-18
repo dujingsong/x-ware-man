@@ -14,4 +14,5 @@ public final class Word extends BaseWord {
 
     // -----------------------------------------异常话术-----------------------------------------
     public static final String BUILD_ITEM_REDIS_EXCEPTION = "构建redis监控项异常";
+    public static final String TRIGGER_STRATEGY_EXCEPTION = "触发器策略处理异常";
 }
