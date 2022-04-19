@@ -1,7 +1,9 @@
 package cn.imadc.application.xwareman.module.trigger.controller;
 
 
+import cn.imadc.application.base.common.enums.AuthType;
 import cn.imadc.application.base.common.response.ResponseW;
+import cn.imadc.application.xwareman.core.data.annoations.Api;
 import cn.imadc.application.xwareman.module.trigger.dto.request.TriggerFindReqDTO;
 import cn.imadc.application.xwareman.module.trigger.entity.Trigger;
 import cn.imadc.application.xwareman.module.trigger.service.ITriggerService;
@@ -43,6 +45,7 @@ public class TriggerController {
      * @param trigger 参数
      * @return 结果
      */
+    @Api(authType = AuthType.ANONYMOUS)
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public ResponseW add(@RequestBody Trigger trigger) {
         return triggerService.add(trigger);

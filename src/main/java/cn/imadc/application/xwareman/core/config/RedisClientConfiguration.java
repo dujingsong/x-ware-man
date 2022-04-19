@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 2022-03-07
  */
 @Configuration
-public class RedisClientConfig {
+public class RedisClientConfiguration {
 
     @Bean
     public RedisClient redisClient() {

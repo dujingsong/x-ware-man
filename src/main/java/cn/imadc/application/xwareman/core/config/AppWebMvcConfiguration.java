@@ -1,7 +1,7 @@
 package cn.imadc.application.xwareman.core.config;
 
-import cn.imadc.application.xwareman.core.interceptor.AuthInterceptor;
-import cn.imadc.application.xwareman.core.interceptor.CtxInterceptor;
+import cn.imadc.application.xwareman.core.config.interceptor.AuthInterceptor;
+import cn.imadc.application.xwareman.core.config.interceptor.CtxInterceptor;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -17,7 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @AllArgsConstructor
 @Configuration
-public class AppWebMvcConfig implements WebMvcConfigurer {
+public class AppWebMvcConfiguration implements WebMvcConfigurer {
 
     private final CtxInterceptor ctxInterceptor;
     private final AuthInterceptor authInterceptor;

@@ -1,6 +1,6 @@
-package cn.imadc.application.xwareman.core.task;
+package cn.imadc.application.xwareman.core.data.task;
 
-import cn.imadc.application.xwareman.core.component.collector.InstanceItemRedisCollectHandler;
+import cn.imadc.application.xwareman.core.data.component.collector.InstanceItemRedisCollectHandler;
 import cn.imadc.application.xwareman.module.instance.dto.data.InstanceRedisData;
 import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisFindReqDTO;
 import cn.imadc.application.xwareman.module.instance.service.IInstanceRedisService;

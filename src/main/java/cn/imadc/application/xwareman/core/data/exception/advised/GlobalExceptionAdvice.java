@@ -1,4 +1,4 @@
-package cn.imadc.application.xwareman.core.advised;
+package cn.imadc.application.xwareman.core.data.exception.advised;
 
 import cn.imadc.application.base.common.exception.BizException;
 import cn.imadc.application.base.common.exception.NotLoginException;

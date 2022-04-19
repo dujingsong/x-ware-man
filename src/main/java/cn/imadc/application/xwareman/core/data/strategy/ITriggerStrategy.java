@@ -14,9 +14,6 @@ public interface ITriggerStrategy {
 
     /**
      * 处理
-     *
-     * @param trigger 触发器
      */
     void handle(Trigger trigger);
-
 }

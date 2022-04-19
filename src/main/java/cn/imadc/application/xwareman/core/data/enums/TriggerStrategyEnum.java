@@ -36,6 +36,6 @@ public enum TriggerStrategyEnum implements IEnumAble {
 
     @Override
     public String v() {
-        return null;
+        return this.toString();
     }
 }

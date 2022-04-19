@@ -1,5 +1,6 @@
 package cn.imadc.application.xwareman.core.config;
 
+import cn.imadc.application.xwareman.core.data.constant.Constant;
 import cn.imadc.application.xwareman.core.data.property.AppProp;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -23,8 +24,10 @@ public class ScheduledConfiguration implements SchedulingConfigurer {
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setThreadNamePrefix("SCHEDULED_" + counter.incrementAndGet());// 设置定时任务线程名称的前缀
-        int corePoolSize = appProp.getScheduledCorePoolSize(); // 设置定时任务的核心线程数
+        // 设置定时任务线程名称的前缀
+        executor.setThreadNamePrefix(Constant.SCHEDULED_THREAD_NAME_PREFIX + counter.incrementAndGet());
+        // 设置定时任务的核心线程数
+        int corePoolSize = appProp.getScheduledCorePoolSize();
         taskRegistrar.setScheduler(Executors.newScheduledThreadPool(corePoolSize, executor));
     }
 }

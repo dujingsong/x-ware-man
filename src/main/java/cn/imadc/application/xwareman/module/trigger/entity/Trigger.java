@@ -1,6 +1,7 @@
 package cn.imadc.application.xwareman.module.trigger.entity;
 
 import cn.imadc.application.base.common.persistence.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
+@TableName("item_trigger")
 public class Trigger extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

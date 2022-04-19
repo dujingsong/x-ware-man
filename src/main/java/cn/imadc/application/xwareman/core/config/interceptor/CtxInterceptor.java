@@ -1,4 +1,4 @@
-package cn.imadc.application.xwareman.core.interceptor;
+package cn.imadc.application.xwareman.core.config.interceptor;
 
 import cn.imadc.application.base.auth.jwt.JWT;
 import cn.imadc.application.base.common.context.ReqCtxConstant;

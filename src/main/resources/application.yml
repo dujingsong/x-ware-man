@@ -7,8 +7,15 @@ spring:
 server:
   port: 8080
 
+#mybatis-plus配置
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+
 app:
   ctx-timeout: 12
   ctx-timeout-unit: HOURS
   avatar-path: avatar/
   scheduled-core-pool-size: 10
+  instance-item-trigger-task-core-pool-size: 200

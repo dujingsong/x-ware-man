@@ -20,6 +20,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -93,6 +94,7 @@ public class ItemRedisServiceImpl extends BaseMPServiceImpl<ItemRedisMapper, Ite
 
     @Override
     public List<Object> selectColAtSpecifiedTime(String col, LocalDateTime begin, LocalDateTime end) {
-        return itemRedisMapper.selectColAtSpecifiedTime(col, begin, end);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return itemRedisMapper.selectColAtSpecifiedTime(col, begin.format(dateTimeFormatter), end.format(dateTimeFormatter));
     }
 }

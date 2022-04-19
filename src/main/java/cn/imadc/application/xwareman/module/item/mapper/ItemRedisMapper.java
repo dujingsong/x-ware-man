@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -19,5 +18,5 @@ import java.util.List;
 @Mapper
 public interface ItemRedisMapper extends BaseMapper<ItemRedis> {
 
-    List<Object> selectColAtSpecifiedTime(@Param("col") String col, @Param("begin") LocalDateTime begin, @Param("end") LocalDateTime end);
+    List<Object> selectColAtSpecifiedTime(@Param("col") String col, @Param("begin") String begin, @Param("end") String end);
 }
