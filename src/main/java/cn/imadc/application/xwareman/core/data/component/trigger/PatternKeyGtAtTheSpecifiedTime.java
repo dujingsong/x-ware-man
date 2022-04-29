@@ -1,6 +1,7 @@
 package cn.imadc.application.xwareman.core.data.component.trigger;
 
 import cn.imadc.application.xwareman.core.data.annoations.StrategyTrigger;
+import cn.imadc.application.xwareman.core.data.component.item.InstanceItemDataComponent;
 import cn.imadc.application.xwareman.core.data.enums.TriggerStrategyEnum;
 import cn.imadc.application.xwareman.core.data.strategy.ITriggerStrategy;
 import cn.imadc.application.xwareman.module.trigger.entity.Trigger;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * 指定时间内新值小于旧值
+ * 指定时间内符合条件的数据数量大于
  * </p>
  *
  * @author 杜劲松
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class PatternKeyGtAtTheSpecifiedTime implements ITriggerStrategy {
+
+    private final InstanceItemDataComponent instanceItemDataComponent;
 
     @Override
     public void handle(Trigger trigger) {

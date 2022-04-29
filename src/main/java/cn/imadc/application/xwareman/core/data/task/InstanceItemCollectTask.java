@@ -27,7 +27,7 @@ public class InstanceItemCollectTask {
     private final IInstanceRedisService instanceRedisService;
     private final InstanceItemRedisCollectHandler instanceItemRedisCollectHandler;
 
-    @Scheduled(initialDelay = 5 * 1000, fixedDelay = 1000)
+    @Scheduled(initialDelay = 5 * 1000, fixedDelay = 5 * 1000)
     public void collectRedisInstanceItem() {
 
         InstanceRedisFindReqDTO findReqDTO = new InstanceRedisFindReqDTO();

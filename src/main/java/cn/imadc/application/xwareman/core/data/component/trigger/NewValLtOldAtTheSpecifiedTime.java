@@ -1,14 +1,14 @@
 package cn.imadc.application.xwareman.core.data.component.trigger;
 
 import cn.imadc.application.xwareman.core.data.annoations.StrategyTrigger;
+import cn.imadc.application.xwareman.core.data.component.item.InstanceItemDataComponent;
 import cn.imadc.application.xwareman.core.data.enums.TriggerStrategyEnum;
 import cn.imadc.application.xwareman.core.data.strategy.ITriggerStrategy;
-import cn.imadc.application.xwareman.module.item.service.IItemRedisService;
 import cn.imadc.application.xwareman.module.trigger.entity.Trigger;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -24,14 +24,22 @@ import java.util.List;
 @Component
 public class NewValLtOldAtTheSpecifiedTime implements ITriggerStrategy {
 
-    private final IItemRedisService itemRedisService;
+    private final InstanceItemDataComponent instanceItemDataComponent;
 
     @Override
     public void handle(Trigger trigger) {
-        String col = trigger.getCol();
-        LocalDateTime begin = LocalDateTime.now();
-        LocalDateTime end = begin.minusMinutes(10);
-        List<Object> colDataList = itemRedisService.selectColAtSpecifiedTime(col, end, begin);
-        System.out.printf("%s-%s\n", Thread.currentThread().getName(), trigger.getId());
+        List<Object> colDataList = instanceItemDataComponent.selectColAtSpecifiedTime(trigger);
+
+        if (CollectionUtils.isEmpty(colDataList)) return;
+
+        if (colDataList.size() == 1) return;
+
+        Object oldest = colDataList.get(0);
+        Object newest = colDataList.get(colDataList.size() - 1);
+
+        double oldestV = Double.parseDouble(oldest.toString());
+        double newestV = Double.parseDouble(newest.toString());
+
+        System.out.println(newestV > oldestV);
     }
 }

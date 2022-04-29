@@ -68,9 +68,22 @@ public class Trigger extends BaseEntity implements Serializable {
     private Double threshold;
 
     /**
-     * 式样
+     * 规则式样（如：扫描redis关键key匹配）
      */
     private String pattern;
 
+    /**
+     * 周期类型（0：rate 1：cron）
+     */
+    private Integer periodType;
 
+    /**
+     * 周期 （ periodType=0 ： minutes periodType=1 ： cron expression）
+     */
+    private String period;
+
+    /**
+     * 扫描跨度（minutes）
+     */
+    private Long span;
 }

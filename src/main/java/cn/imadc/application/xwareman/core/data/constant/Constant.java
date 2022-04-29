@@ -27,4 +27,11 @@ public final class Constant extends BaseConstant {
      */
     public static final String SCHEDULED_THREAD_NAME_PREFIX = "SCHEDULED-TASK-";
 
+    // -----------------------------------------其他-----------------------------------------
+    /**
+     * 日志分隔符
+     */
+    public static final String LOG_LINE_SEPARATOR
+            = "--------------------------------------------------------------------------------------------------------";
+
 }

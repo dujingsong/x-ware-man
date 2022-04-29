@@ -1,10 +1,12 @@
 package cn.imadc.application.xwareman.core.data.property;
 
+import cn.imadc.application.xwareman.core.data.jdbc.sql.JdbcEventType;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -51,4 +53,27 @@ public class AppProp {
      * 监控项触发器任务核心线程数
      */
     private Integer instanceItemTriggerTaskCorePoolSize;
+
+    // -----------------------------------------------log相关-----------------------------------------------
+    /**
+     * 日志配置
+     */
+    private Log log;
+
+    @Getter
+    @Setter
+    public static class Log {
+        // 打印异常
+        private boolean printException;
+        // 打印sql
+        private boolean printJdbcEvent;
+        // 打印会话日志体
+        private boolean printContextLog;
+        // 不需要打印的sql类型
+        private List<JdbcEventType> excludeJdbcEventType;
+        // 是否记录慢sql
+        private boolean slowQueryLog;
+        // 慢sql阈值（毫秒）
+        private long longQueryTime;
+    }
 }

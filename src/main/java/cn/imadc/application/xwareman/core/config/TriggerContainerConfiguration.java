@@ -23,11 +23,12 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
  * <p>
- *
+ * 触发器容器配置
  * </p>
  *
  * @author 杜劲松
@@ -91,7 +92,10 @@ public class TriggerContainerConfiguration implements ApplicationContextAware, S
 
         DefaultTriggerContainer container = genericApplicationContext.getBean(containerBeanName,
                 DefaultTriggerContainer.class);
-        threadPoolTaskScheduler.scheduleAtFixedRate(container, 1000);
+
+        long period = Long.parseLong(trigger.getPeriod());
+        period = TimeUnit.MILLISECONDS.convert(period, TimeUnit.MINUTES);
+        threadPoolTaskScheduler.scheduleAtFixedRate(container, period);
     }
 
     private DefaultTriggerContainer createTriggerContainer(String containerBeanName, ITriggerStrategy bean,

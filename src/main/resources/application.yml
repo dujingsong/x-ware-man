@@ -3,7 +3,29 @@ spring:
     name: @project.artifactId@
   profiles:
     active: dev
-
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 使用druid连接池
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      # https://github.com/alibaba/druid/wiki/DruidDataSource%E9%85%8D%E7%BD%AE%E5%B1%9E%E6%80%A7%E5%88%97%E8%A1%A8
+      # 连接池配置
+      initialSize: 5  # 初始连接数
+      maxActive: 20  # 最大活跃连接数
+      minIdle: 5  # 最小空闲连接数
+      maxWait: 60000  # 等待超时时间（毫秒）
+      poolPreparedStatements: false  # 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
+      max-pool-prepared-statement-per-connection-size: -1  # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100
+      maxOpenPreparedStatements: 20  #  poolPreparedStatement数量
+      validation-query: SELECT 1  # mysql心跳检测语句
+      validation-query-timeout: 5  # 心跳检测间隔（秒）
+      test-on-borrow: true  # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+      test-on-return: false  # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+      test-while-idle: true  # 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+      keep-alive: false  # 连接池中的minIdle数量以内的连接，空闲时间超过minEvictableIdleTimeMillis，则会执行keepAlive操作。
+      time-between-eviction-runs-millis: 60000  # 有两个含义：  1) Destroy线程会检测连接的间隔时间，如果连接空闲时间大于等于minEvictableIdleTimeMillis则关闭物理连接。 2) testWhileIdle的判断依据，详细看testWhileIdle属性的说明
+      min-evictable-idle-time-millis: 30000  #  连接保持空闲而不被驱逐的最小时间
+      max-evictable-idle-time-millis: 60000  # 连接保持空闲而不被驱逐的最大时间
 server:
   port: 8080
 
