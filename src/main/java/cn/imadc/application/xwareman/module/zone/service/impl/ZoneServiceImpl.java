@@ -3,6 +3,7 @@ package cn.imadc.application.xwareman.module.zone.service.impl;
 import cn.imadc.application.base.common.response.ResponseW;
 import cn.imadc.application.base.mybatisplus.repository.impl.BaseMPServiceImpl;
 import cn.imadc.application.xwareman.core.data.constant.Constant;
+import cn.imadc.application.xwareman.module.zone.dto.data.ZoneTreeNode;
 import cn.imadc.application.xwareman.module.zone.dto.request.ZoneFindReqDTO;
 import cn.imadc.application.xwareman.module.zone.entity.Zone;
 import cn.imadc.application.xwareman.module.zone.mapper.ZoneMapper;
@@ -13,6 +14,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -60,5 +64,31 @@ public class ZoneServiceImpl extends BaseMPServiceImpl<ZoneMapper, Zone> impleme
         userUpdateWrapper.eq("id", zone.getId());
         userUpdateWrapper.set(Constant.DEL_FLAG, Constant.DEL_VAL);
         return update(userUpdateWrapper) ? ResponseW.success() : ResponseW.error();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public ResponseW tree(ZoneFindReqDTO reqDTO) {
+        List<Zone> zoneList = (List<Zone>) find(reqDTO).getBody();
+
+        List<ZoneTreeNode> zoneTreeNodeList = new ArrayList<>();
+
+        ZoneTreeNode parent = new ZoneTreeNode();
+        parent.setTitle("全部区域");
+        parent.setKey(Constant.ERROR_ID);
+
+        List<ZoneTreeNode> children = new ArrayList<>();
+        zoneList.forEach(zone -> {
+            ZoneTreeNode child = new ZoneTreeNode();
+            child.setTitle(zone.getName());
+            child.setKey(zone.getId());
+            children.add(child);
+        });
+
+        parent.setChildren(children);
+
+        zoneTreeNodeList.add(parent);
+
+        return ResponseW.success(zoneTreeNodeList);
     }
 }

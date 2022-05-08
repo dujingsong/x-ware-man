@@ -2,6 +2,7 @@ package cn.imadc.application.xwareman.module.instance.entity;
 
 import cn.imadc.application.base.common.persistence.BaseEntity;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,6 +42,12 @@ public class Instance extends BaseEntity implements Serializable {
      * 区域ID
      */
     private Long zoneId;
+
+    /**
+     * 区域名称
+     */
+    @TableField(exist = false)
+    private String zoneName;
 
     /**
      * cpu个数

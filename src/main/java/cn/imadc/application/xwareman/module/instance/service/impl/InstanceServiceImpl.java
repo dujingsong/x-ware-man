@@ -1,13 +1,14 @@
 package cn.imadc.application.xwareman.module.instance.service.impl;
 
 import cn.imadc.application.base.common.response.ResponseW;
-import cn.imadc.application.base.lettuce.RedisClient;
 import cn.imadc.application.base.mybatisplus.repository.impl.BaseMPServiceImpl;
 import cn.imadc.application.xwareman.core.data.constant.Constant;
 import cn.imadc.application.xwareman.module.instance.dto.request.InstanceFindReqDTO;
 import cn.imadc.application.xwareman.module.instance.entity.Instance;
 import cn.imadc.application.xwareman.module.instance.mapper.InstanceMapper;
 import cn.imadc.application.xwareman.module.instance.service.IInstanceService;
+import cn.imadc.application.xwareman.module.zone.entity.Zone;
+import cn.imadc.application.xwareman.module.zone.service.IZoneService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -15,6 +16,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -28,16 +31,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class InstanceServiceImpl extends BaseMPServiceImpl<InstanceMapper, Instance> implements IInstanceService {
 
-    private final RedisClient redisClient;
+    private final IZoneService zoneService;
 
     @Override
     public ResponseW find(InstanceFindReqDTO reqDTO) {
         QueryWrapper<Instance> queryWrapper = buildQueryWrapper(reqDTO);
 
-        if (!reqDTO.pageQuery()) return ResponseW.success(list(queryWrapper));
+        if (!reqDTO.pageQuery()) {
+            List<Instance> instances = list(queryWrapper);
+            handleDataList(instances);
+            return ResponseW.success(instances);
+        }
 
         Page<Instance> page = new Page<>(reqDTO.getPageNo(), reqDTO.getPageSize(), true);
         IPage<Instance> pageData = page(page, queryWrapper);
+        handleDataList(pageData.getRecords());
         return ResponseW.success(pageData);
     }
 
@@ -50,7 +58,32 @@ public class InstanceServiceImpl extends BaseMPServiceImpl<InstanceMapper, Insta
             queryWrapper.eq("ip", reqDTO.getIp());
         }
 
+        // zoneId
+        if (null != reqDTO.getZoneId()) {
+            queryWrapper.eq("zone_id", reqDTO.getZoneId());
+        }
+
+        // searchStr
+        if (StringUtils.isNotEmpty(reqDTO.getKeywords())) {
+            queryWrapper.and(wrapper -> wrapper.like("name", reqDTO.getKeywords())
+                    .or().like("ip", reqDTO.getKeywords()));
+        }
+
         return queryWrapper;
+    }
+
+    /**
+     * 处理数据
+     *
+     * @param dataList 数据列表
+     */
+    private void handleDataList(List<Instance> dataList) {
+        for (Instance instance : dataList) {
+            if (null != instance.getZoneId()) {
+                Zone zone = zoneService.getById(instance.getZoneId());
+                if (null != zone) instance.setZoneName(zone.getName());
+            }
+        }
     }
 
     @Override

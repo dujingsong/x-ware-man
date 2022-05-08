@@ -85,6 +85,8 @@ public class UserServiceImpl extends BaseMPServiceImpl<UserMapper, User> impleme
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(Constant.DEL_FLAG, Constant.NOT_DEL_VAL);
 
+        queryWrapper.ne("id", 1L);
+
         return queryWrapper;
     }
 

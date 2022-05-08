@@ -28,4 +28,9 @@ public class InstanceFindReqDTO extends BaseSearchDTO implements Serializable {
      */
     private Integer port;
 
+    /**
+     * 区域ID
+     */
+    private Long zoneId;
+
 }

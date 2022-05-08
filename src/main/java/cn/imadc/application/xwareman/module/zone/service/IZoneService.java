@@ -46,4 +46,12 @@ public interface IZoneService extends IBaseMPService<Zone> {
      * @return 结果
      */
     ResponseW delete(Zone zone);
+
+    /**
+     * 查询并转换为树节点
+     *
+     * @param reqDTO 参数
+     * @return 结果
+     */
+    ResponseW tree(ZoneFindReqDTO reqDTO);
 }

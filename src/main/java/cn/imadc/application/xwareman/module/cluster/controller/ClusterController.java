@@ -8,6 +8,7 @@ import cn.imadc.application.xwareman.module.cluster.dto.request.ClusterFindReqDT
 import cn.imadc.application.xwareman.module.cluster.dto.request.ClusterQueryReqDTO;
 import cn.imadc.application.xwareman.module.cluster.entity.Cluster;
 import cn.imadc.application.xwareman.module.cluster.service.IClusterService;
+import cn.imadc.application.xwareman.module.zone.dto.request.ZoneFindReqDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -83,5 +84,16 @@ public class ClusterController {
     @RequestMapping(value = "query", method = RequestMethod.POST)
     public ResponseW query(@RequestBody ClusterQueryReqDTO reqDTO) {
         return clusterService.query(reqDTO);
+    }
+
+    /**
+     * 查询并转换为树节点
+     *
+     * @param reqDTO 参数
+     * @return 结果
+     */
+    @RequestMapping(value = "tree", method = RequestMethod.POST)
+    public ResponseW tree(@RequestBody ClusterFindReqDTO reqDTO) {
+        return clusterService.tree(reqDTO);
     }
 }

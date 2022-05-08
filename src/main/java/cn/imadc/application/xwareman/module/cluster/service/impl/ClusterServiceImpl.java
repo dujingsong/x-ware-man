@@ -4,6 +4,7 @@ import cn.imadc.application.base.common.response.ResponseW;
 import cn.imadc.application.base.mybatisplus.repository.impl.BaseMPServiceImpl;
 import cn.imadc.application.xwareman.core.data.constant.Constant;
 import cn.imadc.application.xwareman.module.cluster.dto.data.ClusterQueryData;
+import cn.imadc.application.xwareman.module.cluster.dto.data.ClusterTreeNode;
 import cn.imadc.application.xwareman.module.cluster.dto.request.ClusterFindReqDTO;
 import cn.imadc.application.xwareman.module.cluster.dto.request.ClusterQueryReqDTO;
 import cn.imadc.application.xwareman.module.cluster.entity.Cluster;
@@ -16,6 +17,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -72,5 +74,30 @@ public class ClusterServiceImpl extends BaseMPServiceImpl<ClusterMapper, Cluster
     public ResponseW query(ClusterQueryReqDTO reqDTO) {
         List<ClusterQueryData> clusters = clusterMapper.query(reqDTO);
         return ResponseW.success(clusters);
+    }
+
+    @Override
+    public ResponseW tree(ClusterFindReqDTO reqDTO) {
+        List<Cluster> dataList = (List<Cluster>) find(reqDTO).getBody();
+
+        List<ClusterTreeNode> treeNodeList = new ArrayList<>();
+
+        ClusterTreeNode parent = new ClusterTreeNode();
+        parent.setTitle("全部集群");
+        parent.setKey(Constant.ERROR_ID);
+
+        List<ClusterTreeNode> children = new ArrayList<>();
+        dataList.forEach(zone -> {
+            ClusterTreeNode child = new ClusterTreeNode();
+            child.setTitle(zone.getName());
+            child.setKey(zone.getId());
+            children.add(child);
+        });
+
+        parent.setChildren(children);
+
+        treeNodeList.add(parent);
+
+        return ResponseW.success(treeNodeList);
     }
 }

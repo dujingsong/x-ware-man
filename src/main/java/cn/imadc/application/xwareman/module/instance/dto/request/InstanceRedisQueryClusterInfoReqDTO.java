@@ -7,7 +7,7 @@ import lombok.Setter;
 
 /**
  * <p>
- *
+ * 查询集群信息参数
  * </p>
  *
  * @author 杜劲松

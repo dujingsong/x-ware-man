@@ -56,4 +56,11 @@ public interface IClusterService extends IBaseMPService<Cluster> {
      */
     ResponseW query(ClusterQueryReqDTO reqDTO);
 
+    /**
+     * 查询并转换为树节点
+     *
+     * @param reqDTO 参数
+     * @return 结果
+     */
+    ResponseW tree(ClusterFindReqDTO reqDTO);
 }

@@ -41,8 +41,8 @@ public class MinValGtAtTheSpecifiedTime implements ITriggerStrategy {
         if (null == min) return;
 
         Double threshold = trigger.getThreshold();
-        Double maxV = Double.parseDouble(min.toString());
+        Double minV = Double.parseDouble(min.toString());
 
-        System.out.println(threshold > maxV);
+        System.out.println(threshold > minV);
     }
 }

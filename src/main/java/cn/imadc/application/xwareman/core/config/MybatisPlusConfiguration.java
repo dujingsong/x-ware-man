@@ -1,5 +1,6 @@
 package cn.imadc.application.xwareman.core.config;
 
+import cn.imadc.application.xwareman.core.config.sql.MybatisIntercepts;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
@@ -20,6 +21,8 @@ public class MybatisPlusConfiguration {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        // 自定义拦截器，先添加先执行。
+        interceptor.addInnerInterceptor(new MybatisIntercepts());
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
         return interceptor;
     }

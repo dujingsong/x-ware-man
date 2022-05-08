@@ -1,12 +1,10 @@
 package cn.imadc.application.xwareman.core.data.property;
 
-import cn.imadc.application.xwareman.core.data.jdbc.sql.JdbcEventType;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -69,8 +67,6 @@ public class AppProp {
         private boolean printJdbcEvent;
         // 打印会话日志体
         private boolean printContextLog;
-        // 不需要打印的sql类型
-        private List<JdbcEventType> excludeJdbcEventType;
         // 是否记录慢sql
         private boolean slowQueryLog;
         // 慢sql阈值（毫秒）

@@ -225,7 +225,7 @@ public class InstanceRedisServiceImpl extends BaseMPServiceImpl<InstanceRedisMap
         // 哨兵密码
         String sentinelPassword = reqDTO.getSentinelPassword();
         // 数据节点密码
-        String dataNodePassword = reqDTO.getSentinelPassword();
+        String dataNodePassword = reqDTO.getNodePassword();
         // 集群ID
         Long clusterId = cluster.getId();
 

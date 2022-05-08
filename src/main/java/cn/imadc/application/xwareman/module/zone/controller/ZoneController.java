@@ -69,4 +69,15 @@ public class ZoneController {
     public ResponseW delete(@RequestBody Zone zone) {
         return zoneService.delete(zone);
     }
+
+    /**
+     * 查询并转换为树节点
+     *
+     * @param reqDTO 参数
+     * @return 结果
+     */
+    @RequestMapping(value = "tree", method = RequestMethod.POST)
+    public ResponseW tree(@RequestBody ZoneFindReqDTO reqDTO) {
+        return zoneService.tree(reqDTO);
+    }
 }
