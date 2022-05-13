@@ -6,6 +6,7 @@ import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisFi
 import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisQueryClusterInfoReqDTO;
 import cn.imadc.application.xwareman.module.instance.entity.InstanceRedis;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -37,4 +38,14 @@ public interface InstanceRedisMapper extends BaseMapper<InstanceRedis> {
      * @return 结果
      */
     List<InstanceRedisData> listInstanceRedisData(@Param("condition") InstanceRedisFindReqDTO reqDTO);
+
+    /**
+     * 查询redis实例信息
+     *
+     * @param reqDTO 参数
+     * @param page   分页参数
+     * @return 结果
+     */
+    Page<InstanceRedis> loaInstanceRedisData(@Param("condition") InstanceRedisFindReqDTO reqDTO, Page<InstanceRedis> page);
+
 }

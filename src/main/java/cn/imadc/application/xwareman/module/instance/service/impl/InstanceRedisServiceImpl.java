@@ -22,6 +22,7 @@ import cn.imadc.application.xwareman.module.instance.entity.InstanceRedis;
 import cn.imadc.application.xwareman.module.instance.mapper.InstanceRedisMapper;
 import cn.imadc.application.xwareman.module.instance.service.IInstanceRedisService;
 import cn.imadc.application.xwareman.module.instance.service.IInstanceService;
+import cn.imadc.application.xwareman.module.zone.service.IZoneService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -51,6 +52,7 @@ import java.util.Map;
 @Service
 public class InstanceRedisServiceImpl extends BaseMPServiceImpl<InstanceRedisMapper, InstanceRedis> implements IInstanceRedisService {
 
+    private final IZoneService zoneService;
     private final IInstanceService instanceService;
     private final RedisClient redisClient;
     private final IClusterService clusterService;
@@ -60,11 +62,42 @@ public class InstanceRedisServiceImpl extends BaseMPServiceImpl<InstanceRedisMap
     public ResponseW find(InstanceRedisFindReqDTO reqDTO) {
         QueryWrapper<InstanceRedis> queryWrapper = buildQueryWrapper(reqDTO);
 
-        if (!reqDTO.pageQuery()) return ResponseW.success(list(queryWrapper));
+        List<InstanceRedis> dataList = list(queryWrapper);
+        handle(dataList);
+        if (!reqDTO.pageQuery()) return ResponseW.success(dataList);
 
         Page<InstanceRedis> page = new Page<>(reqDTO.getPageNo(), reqDTO.getPageSize(), true);
         IPage<InstanceRedis> pageData = page(page, queryWrapper);
+        handle(pageData.getRecords());
         return ResponseW.success(pageData);
+    }
+
+    @Override
+    public ResponseW load(InstanceRedisFindReqDTO reqDTO) {
+        Page<InstanceRedis> page = new Page<>(reqDTO.getPageNo(), reqDTO.getPageSize(), true);
+        Page<InstanceRedis> pageData = instanceRedisMapper.loaInstanceRedisData(reqDTO, page);
+        handle(pageData.getRecords());
+        return ResponseW.success(pageData);
+    }
+
+    /**
+     * 处理数据
+     *
+     * @param dataList 数据列表
+     */
+    private void handle(List<InstanceRedis> dataList) {
+        for (InstanceRedis instanceRedis : dataList) {
+            if (null != instanceRedis.getInstanceId()) {
+                Instance instance = instanceService.getById(instanceRedis.getInstanceId());
+                instanceRedis.setInstance(instance);
+                if (null != instance && null != instance.getZoneId()) {
+                    instanceRedis.setZone(zoneService.getById(instance.getZoneId()));
+                }
+            }
+            if (null != instanceRedis.getClusterId()) {
+                instanceRedis.setCluster(clusterService.getById(instanceRedis.getClusterId()));
+            }
+        }
     }
 
     @Override

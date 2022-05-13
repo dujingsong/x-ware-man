@@ -37,6 +37,14 @@ public interface IInstanceRedisService extends IBaseMPService<InstanceRedis> {
      * @param reqDTO 参数
      * @return 结果
      */
+    ResponseW load(InstanceRedisFindReqDTO reqDTO);
+
+    /**
+     * 查询
+     *
+     * @param reqDTO 参数
+     * @return 结果
+     */
     List<InstanceRedis> list(InstanceRedisFindReqDTO reqDTO);
 
     /**

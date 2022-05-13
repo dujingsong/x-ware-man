@@ -23,9 +23,23 @@ public class InstanceRedisFindReqDTO extends BaseSearchDTO implements Serializab
     private RedisNode type;
 
     /**
+     * 节点类型
+     */
+    private Integer typeVal;
+
+    public Integer getTypeVal() {
+        return null != type ? type.getValue() : null;
+    }
+
+    /**
      * 实例ID
      */
     private Long instanceId;
+
+    /**
+     * 集群ID
+     */
+    private Long clusterId;
 
     /**
      * 端口

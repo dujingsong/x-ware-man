@@ -43,6 +43,17 @@ public class InstanceRedisController {
     }
 
     /**
+     * 查询
+     *
+     * @param reqDTO 参数
+     * @return 结果
+     */
+    @RequestMapping(value = "load", method = RequestMethod.POST)
+    public ResponseW load(@RequestBody InstanceRedisFindReqDTO reqDTO) {
+        return instanceRedisService.load(reqDTO);
+    }
+
+    /**
      * 添加
      *
      * @param instanceRedis 参数

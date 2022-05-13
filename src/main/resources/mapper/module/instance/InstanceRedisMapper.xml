@@ -31,4 +31,22 @@
             AND i.del_flag = #{condition.delFlag}
         WHERE t.del_flag = #{condition.delFlag}
     </select>
+    <select id="loaInstanceRedisData"
+            resultType="cn.imadc.application.xwareman.module.instance.dto.data.InstanceRedisData">
+        SELECT t.*
+        FROM instance_redis t
+        LEFT JOIN instance i ON i.id = t.instance_id
+        LEFT JOIN zone z ON z.id = i.zone_id
+        WHERE t.del_flag = #{condition.delFlag}
+        <if test="null != condition.typeVal">
+            AND t.type = #{condition.typeVal}
+        </if>
+        <if test="null != condition.clusterId">
+            AND t.cluster_id = #{condition.clusterId}
+        </if>
+        <if test="null != condition.keywords">
+            AND (i.name LIKE concat('%',#{condition.keywords},'%') OR i.ip LIKE
+            concat('%',#{condition.keywords},'%'))
+        </if>
+    </select>
 </mapper>

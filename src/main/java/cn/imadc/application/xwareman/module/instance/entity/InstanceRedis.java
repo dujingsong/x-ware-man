@@ -1,7 +1,11 @@
 package cn.imadc.application.xwareman.module.instance.entity;
 
 import cn.imadc.application.base.common.persistence.BaseEntity;
+import cn.imadc.application.xwareman.core.util.MixAllUtil;
+import cn.imadc.application.xwareman.module.cluster.entity.Cluster;
+import cn.imadc.application.xwareman.module.zone.entity.Zone;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
@@ -36,14 +40,32 @@ public class InstanceRedis extends BaseEntity implements Serializable {
     private String notes;
 
     /**
+     * 区域信息
+     */
+    @TableField(exist = false)
+    private Zone zone;
+
+    /**
      * 实例ID
      */
     private Long instanceId;
 
     /**
+     * 实例信息
+     */
+    @TableField(exist = false)
+    private Instance instance;
+
+    /**
      * 集群ID
      */
     private Long clusterId;
+
+    /**
+     * 集群信息
+     */
+    @TableField(exist = false)
+    private Cluster cluster;
 
     /**
      * 端口
@@ -71,6 +93,16 @@ public class InstanceRedis extends BaseEntity implements Serializable {
     private Long maxMemory;
 
     /**
+     * 最大内存
+     */
+    @TableField(exist = false)
+    private String maxMemoryDesc;
+
+    public String getMaxMemoryDesc() {
+        return MixAllUtil.prettyMemory(maxMemory);
+    }
+
+    /**
      * 版本信息
      */
     private String redisVersion;
@@ -89,6 +121,16 @@ public class InstanceRedis extends BaseEntity implements Serializable {
      * 启动时间（秒）
      */
     private Long uptimeInSeconds;
+
+    /**
+     * 启动时间
+     */
+    @TableField(exist = false)
+    private String uptimeInSecondsDesc;
+
+    public String getUptimeInSecondsDesc() {
+        return MixAllUtil.prettyTime(uptimeInSeconds);
+    }
 
     /**
      * hz

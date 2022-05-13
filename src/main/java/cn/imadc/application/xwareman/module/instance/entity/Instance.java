@@ -1,6 +1,7 @@
 package cn.imadc.application.xwareman.module.instance.entity;
 
 import cn.imadc.application.base.common.persistence.BaseEntity;
+import cn.imadc.application.xwareman.core.util.MixAllUtil;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -55,12 +56,18 @@ public class Instance extends BaseEntity implements Serializable {
     private Integer cpu;
 
     /**
-     * 内存b
+     * 内存gb
      */
     private Long memory;
 
     /**
-     * 磁盘b
+     * 内存
+     */
+    @TableField(exist = false)
+    private String memoryDesc = MixAllUtil.prettyMemory(memory);
+
+    /**
+     * 磁盘gb
      */
     private Long disk;
 
