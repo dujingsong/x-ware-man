@@ -8,6 +8,14 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
+/**
+ * <p>
+ * 查询参数
+ * </p>
+ *
+ * @author 杜劲松
+ * @since 2022-03-08
+ */
 @Getter
 @Setter
 public class InstanceRedisFindReqDTO extends BaseSearchDTO implements Serializable {

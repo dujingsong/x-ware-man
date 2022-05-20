@@ -5,13 +5,11 @@ import cn.imadc.application.base.data.structure.redis.RedisInfo;
 import cn.imadc.application.base.data.structure.redis.RedisNode;
 import cn.imadc.application.base.mybatisplus.repository.IBaseMPService;
 import cn.imadc.application.xwareman.module.instance.dto.data.InstanceRedisData;
-import cn.imadc.application.xwareman.module.instance.dto.request.DiscoveryRedisReqDTO;
-import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisFindReqDTO;
-import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisQueryClusterInfoReqDTO;
-import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisRegisterReqDTO;
+import cn.imadc.application.xwareman.module.instance.dto.request.*;
 import cn.imadc.application.xwareman.module.instance.entity.InstanceRedis;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -107,6 +105,28 @@ public interface IInstanceRedisService extends IBaseMPService<InstanceRedis> {
     RedisInfo info(RedisNode redisNode, String ip, int port, String password);
 
     /**
+     * 获取节点的info信息
+     *
+     * @param redisNode 节点类型
+     * @param ip        ip
+     * @param port      端口
+     * @param password  密码
+     * @return 节点的info信息
+     */
+    Map<String, Map<String, String>> infoMap(RedisNode redisNode, String ip, int port, String password);
+
+    /**
+     * 获取节点的info信息
+     *
+     * @param redisNode 节点类型
+     * @param ip        ip
+     * @param port      端口
+     * @param password  密码
+     * @return 节点的info信息
+     */
+    String infoStr(RedisNode redisNode, String ip, int port, String password);
+
+    /**
      * 查询
      *
      * @param reqDTO 参数
@@ -121,4 +141,12 @@ public interface IInstanceRedisService extends IBaseMPService<InstanceRedis> {
      * @param redisInfo         节点的info信息
      */
     void refreshInfo(InstanceRedisData instanceRedisData, RedisInfo redisInfo);
+
+    /**
+     * 查询redis实例信息
+     *
+     * @param reqDTO 参数
+     * @return 结果
+     */
+    ResponseW queryInfo(InstanceRedisQueryInfoReqDTO reqDTO);
 }

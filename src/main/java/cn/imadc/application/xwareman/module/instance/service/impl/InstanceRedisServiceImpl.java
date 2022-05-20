@@ -9,14 +9,13 @@ import cn.imadc.application.base.lettuce.RedisSentinelExtensionCommands;
 import cn.imadc.application.base.mybatisplus.repository.impl.BaseMPServiceImpl;
 import cn.imadc.application.base.toolkit.serialization.JsonUtil;
 import cn.imadc.application.xwareman.core.data.constant.Constant;
+import cn.imadc.application.xwareman.core.util.MixAllUtil;
 import cn.imadc.application.xwareman.module.cluster.entity.Cluster;
 import cn.imadc.application.xwareman.module.cluster.service.IClusterService;
 import cn.imadc.application.xwareman.module.instance.dto.data.*;
-import cn.imadc.application.xwareman.module.instance.dto.request.DiscoveryRedisReqDTO;
-import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisFindReqDTO;
-import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisQueryClusterInfoReqDTO;
-import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisRegisterReqDTO;
+import cn.imadc.application.xwareman.module.instance.dto.request.*;
 import cn.imadc.application.xwareman.module.instance.dto.response.DiscoveryRedisResDTO;
+import cn.imadc.application.xwareman.module.instance.dto.response.InstanceRedisQueryInfoResDTO;
 import cn.imadc.application.xwareman.module.instance.entity.Instance;
 import cn.imadc.application.xwareman.module.instance.entity.InstanceRedis;
 import cn.imadc.application.xwareman.module.instance.mapper.InstanceRedisMapper;
@@ -35,8 +34,10 @@ import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -337,6 +338,18 @@ public class InstanceRedisServiceImpl extends BaseMPServiceImpl<InstanceRedisMap
 
     @Override
     public RedisInfo info(RedisNode redisNode, String ip, int port, String password) {
+        String info = infoStr(redisNode, ip, port, password);
+        return RedisParser.parseRedisInfo(info);
+    }
+
+    @Override
+    public Map<String, Map<String, String>> infoMap(RedisNode redisNode, String ip, int port, String password) {
+        String info = infoStr(redisNode, ip, port, password);
+        return RedisParser.redisInfo(info);
+    }
+
+    @Override
+    public String infoStr(RedisNode redisNode, String ip, int port, String password) {
         String info;
         try {
 
@@ -354,7 +367,7 @@ public class InstanceRedisServiceImpl extends BaseMPServiceImpl<InstanceRedisMap
             throw new BizException("连接redis节点获取信息失败");
         }
 
-        return RedisParser.parseRedisInfo(info);
+        return info;
     }
 
     @Override
@@ -398,5 +411,71 @@ public class InstanceRedisServiceImpl extends BaseMPServiceImpl<InstanceRedisMap
         updateWrapper.set(InstanceRedis::getConfigFile, server.getConfigFile());
 
         update(updateWrapper);
+    }
+
+    @Override
+    public ResponseW queryInfo(InstanceRedisQueryInfoReqDTO reqDTO) {
+
+        // redis节点
+        InstanceRedis instanceRedis = getById(reqDTO.getId());
+        Integer type = instanceRedis.getType();
+        RedisNode redisNode = RedisNode.of(type);
+
+        // 所在实例
+        Instance instance = instanceService.getById(instanceRedis.getInstanceId());
+        String ip = instance.getIp(), password = instanceRedis.getPassword();
+        int port = instanceRedis.getPort();
+
+        // 实时拉取的redis节点信息
+        Map<String, Map<String, String>> infoMap = infoMap(redisNode, ip, port, password);
+        RedisInfo redisInfo = RedisParser.parseRedisInfo(infoMap);
+        RedisInfo.Server server = redisInfo.getServer();
+        RedisInfo.Memory memory = redisInfo.getMemory();
+        RedisInfo.Clients clients = redisInfo.getClients();
+        RedisInfo.Stats stats = redisInfo.getStats();
+        RedisInfo.Keyspace keyspace = redisInfo.getKeyspace();
+
+        // 构造并填充响应数据
+        InstanceRedisQueryInfoResDTO queryInfoResDTO = new InstanceRedisQueryInfoResDTO();
+        queryInfoResDTO.setId(instanceRedis.getId());
+        queryInfoResDTO.setIp(ip);
+        queryInfoResDTO.setPort(port);
+
+        queryInfoResDTO.setPid(server.getProcessId());
+        queryInfoResDTO.setOs(server.getOs());
+        String memoryDesc = (null != memory
+                ? MixAllUtil.prettyMemory(memory.getMaxMemory())
+                : Constant.QUESTION_MARK) + Constant.SLASH +
+                (null != instance.getMemory()
+                        ? instance.getMemory() + "gb"
+                        : Constant.QUESTION_MARK
+                );
+        queryInfoResDTO.setMemoryDesc(memoryDesc);
+        queryInfoResDTO.setNotes(instanceRedis.getNotes());
+        queryInfoResDTO.setNodeType(instanceRedis.getType());
+        queryInfoResDTO.setVersion(server.getRedisVersion());
+        queryInfoResDTO.setStartedTime(MixAllUtil.prettyTime(server.getUptimeInSeconds()));
+        if (null != memory) {
+            queryInfoResDTO.setCurrentMemory(MixAllUtil.prettyMemory(memory.getUsedMemory()));
+            queryInfoResDTO.setPeakMemory(MixAllUtil.prettyMemory(memory.getUsedMemoryPeak()));
+            queryInfoResDTO.setLuaMemory(MixAllUtil.prettyMemory(memory.getUsedMemoryLua()));
+            queryInfoResDTO.setCurrentMemoryRss(MixAllUtil.prettyMemory(memory.getUsedMemoryRss()));
+        }
+        queryInfoResDTO.setCurrentConnection(clients.getConnectedClients());
+        queryInfoResDTO.setTotalConnection(stats.getTotalConnectionsReceived());
+        queryInfoResDTO.setTotalCommand(stats.getTotalCommandsProcessed());
+        queryInfoResDTO.setBlockedConnection(clients.getBlockedClients());
+        if (null != keyspace) {
+            List<RedisInfo.Keyspace.DBInfo> dbInfoList = keyspace.getDbInfoList();
+            if (!CollectionUtils.isEmpty(dbInfoList)) {
+                dbInfoList.sort(Comparator.comparingInt(RedisInfo.Keyspace.DBInfo::getDbIndex));
+            }
+            queryInfoResDTO.setDbInfoList(dbInfoList);
+        }
+
+        // info信息
+        queryInfoResDTO.setAllInfo(infoMap);
+
+        return ResponseW.success(queryInfoResDTO);
     }
 }

@@ -4,10 +4,7 @@ package cn.imadc.application.xwareman.module.instance.controller;
 import cn.imadc.application.base.common.enums.AuthType;
 import cn.imadc.application.base.common.response.ResponseW;
 import cn.imadc.application.xwareman.core.data.annoations.Api;
-import cn.imadc.application.xwareman.module.instance.dto.request.DiscoveryRedisReqDTO;
-import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisFindReqDTO;
-import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisQueryClusterInfoReqDTO;
-import cn.imadc.application.xwareman.module.instance.dto.request.InstanceRedisRegisterReqDTO;
+import cn.imadc.application.xwareman.module.instance.dto.request.*;
 import cn.imadc.application.xwareman.module.instance.entity.InstanceRedis;
 import cn.imadc.application.xwareman.module.instance.service.IInstanceRedisService;
 import lombok.AllArgsConstructor;
@@ -120,5 +117,17 @@ public class InstanceRedisController {
     @RequestMapping(value = "queryClusterInfo", method = RequestMethod.POST)
     public ResponseW queryClusterInfo(@RequestBody InstanceRedisQueryClusterInfoReqDTO reqDTO) {
         return instanceRedisService.queryClusterInfo(reqDTO);
+    }
+
+    /**
+     * 查询redis实例信息
+     *
+     * @param reqDTO 参数
+     * @return 结果
+     */
+    @Api(authType = AuthType.ANONYMOUS)
+    @RequestMapping(value = "queryInfo", method = RequestMethod.POST)
+    public ResponseW queryInfo(@RequestBody InstanceRedisQueryInfoReqDTO reqDTO) {
+        return instanceRedisService.queryInfo(reqDTO);
     }
 }
