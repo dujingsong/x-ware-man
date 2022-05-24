@@ -69,4 +69,12 @@ public interface IItemRedisService extends IBaseMPService<ItemRedis> {
      * @return 符合调价的字段数据列表
      */
     List<Object> selectColAtSpecifiedTime(String col, LocalDateTime begin, LocalDateTime end);
+
+    /**
+     * 查询监控收集项列定义
+     *
+     * @param reqDTO 参数
+     * @return 结果
+     */
+    ResponseW loadColumDefinition(ItemRedisFindReqDTO reqDTO);
 }

@@ -10,5 +10,8 @@ import java.io.Serializable;
 @Setter
 public class ItemRedisFindReqDTO extends BaseSearchDTO implements Serializable {
 
-
+    /**
+     * 实例redisID
+     */
+    private Long instanceRedisId;
 }

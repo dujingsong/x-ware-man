@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 触发器查询参数
+ * 触发器规则查询参数
  * </p>
  *
  * @author 杜劲松
@@ -16,7 +16,11 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-public class TriggerFindReqDTO extends BaseSearchDTO implements Serializable {
+public class ListTriggerStrategyReqDTO extends BaseSearchDTO implements Serializable {
 
+    /**
+     * -1 通用； 0 redis； 1 rocketmq
+     */
+    private Integer scope;
 
 }

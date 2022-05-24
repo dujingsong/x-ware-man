@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @AllArgsConstructor
 @RestController
-@RequestMapping("item")
+@RequestMapping("item/redis")
 public class ItemRedisController {
 
     private final IItemRedisService itemRedisService;
@@ -68,5 +68,16 @@ public class ItemRedisController {
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     public ResponseW delete(@RequestBody ItemRedis itemRedis) {
         return itemRedisService.delete(itemRedis);
+    }
+
+    /**
+     * 查询监控收集项列定义
+     *
+     * @param reqDTO 参数
+     * @return 结果
+     */
+    @RequestMapping(value = "loadColumDefinition", method = RequestMethod.POST)
+    public ResponseW loadColumDefinition(@RequestBody ItemRedisFindReqDTO reqDTO) {
+        return itemRedisService.loadColumDefinition(reqDTO);
     }
 }

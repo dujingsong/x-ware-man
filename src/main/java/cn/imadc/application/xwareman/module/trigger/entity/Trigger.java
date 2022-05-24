@@ -1,6 +1,7 @@
 package cn.imadc.application.xwareman.module.trigger.entity;
 
 import cn.imadc.application.base.common.persistence.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
 import lombok.Setter;
@@ -58,6 +59,12 @@ public class Trigger extends BaseEntity implements Serializable {
     private Integer strategy;
 
     /**
+     * 策略
+     */
+    @TableField(exist = false)
+    private String strategyDesc;
+
+    /**
      * 策略字段
      */
     private String col;
@@ -81,6 +88,12 @@ public class Trigger extends BaseEntity implements Serializable {
      * 周期 （ periodType=0 ： minutes periodType=1 ： cron expression）
      */
     private String period;
+
+    /**
+     * 周期说明
+     */
+    @TableField(exist = false)
+    private String periodDesc;
 
     /**
      * 扫描跨度（minutes）

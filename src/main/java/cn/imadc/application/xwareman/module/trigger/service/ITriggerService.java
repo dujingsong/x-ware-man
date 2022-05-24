@@ -2,6 +2,7 @@ package cn.imadc.application.xwareman.module.trigger.service;
 
 import cn.imadc.application.base.common.response.ResponseW;
 import cn.imadc.application.base.mybatisplus.repository.IBaseMPService;
+import cn.imadc.application.xwareman.module.trigger.dto.request.ListTriggerStrategyReqDTO;
 import cn.imadc.application.xwareman.module.trigger.dto.request.TriggerFindReqDTO;
 import cn.imadc.application.xwareman.module.trigger.entity.Trigger;
 
@@ -57,4 +58,11 @@ public interface ITriggerService extends IBaseMPService<Trigger> {
      */
     ResponseW delete(Trigger trigger);
 
+    /**
+     * 查询触发器规则
+     *
+     * @param reqDTO 参数
+     * @return 结果
+     */
+    ResponseW listTriggerStrategy(ListTriggerStrategyReqDTO reqDTO);
 }

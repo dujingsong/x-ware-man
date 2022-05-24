@@ -19,8 +19,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,6 +54,12 @@ public class ItemRedisServiceImpl extends BaseMPServiceImpl<ItemRedisMapper, Ite
         QueryWrapper<ItemRedis> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(Constant.DEL_FLAG, Constant.NOT_DEL_VAL);
 
+        // 实例redisID
+        if (null != reqDTO.getInstanceRedisId()) {
+            queryWrapper.eq("instance_redis_id", reqDTO.getInstanceRedisId());
+        }
+
+        queryWrapper.orderByDesc("create_time");
         return queryWrapper;
     }
 
@@ -96,5 +104,21 @@ public class ItemRedisServiceImpl extends BaseMPServiceImpl<ItemRedisMapper, Ite
     public List<Object> selectColAtSpecifiedTime(String col, LocalDateTime begin, LocalDateTime end) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return itemRedisMapper.selectColAtSpecifiedTime(col, begin.format(dateTimeFormatter), end.format(dateTimeFormatter));
+    }
+
+    @Override
+    public ResponseW loadColumDefinition(ItemRedisFindReqDTO reqDTO) {
+        Field[] fields = ItemRedis.class.getDeclaredFields();
+        List<String> fieldList = new ArrayList<>();
+        fieldList.add("createTime");
+        for (Field field : fields) {
+            if (field.getName().equals("id")) continue;
+            if (field.getName().equals("serialVersionUID")) continue;
+            if (field.getName().equals("notes")) continue;
+            if (field.getName().equals("instanceId")) continue;
+            if (field.getName().equals("instanceRedisId")) continue;
+            fieldList.add(field.getName());
+        }
+        return ResponseW.success(fieldList);
     }
 }
