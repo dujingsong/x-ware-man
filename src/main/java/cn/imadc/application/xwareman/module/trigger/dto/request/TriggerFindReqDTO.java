@@ -18,5 +18,9 @@ import java.io.Serializable;
 @Setter
 public class TriggerFindReqDTO extends BaseSearchDTO implements Serializable {
 
+    /**
+     * 具体实例ID
+     */
+    private Long instanceItemId;
 
 }

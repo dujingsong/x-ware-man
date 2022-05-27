@@ -1,6 +1,7 @@
 package cn.imadc.application.xwareman.module.trigger.entity;
 
 import cn.imadc.application.base.common.persistence.BaseEntity;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
@@ -78,6 +79,12 @@ public class Trigger extends BaseEntity implements Serializable {
      * 规则式样（如：扫描redis关键key匹配）
      */
     private String pattern;
+
+    /**
+     * 规则式样
+     */
+    @TableField(exist = false)
+    private JSONObject patternJson;
 
     /**
      * 周期类型（0：rate 1：cron）

@@ -7,6 +7,9 @@ import cn.imadc.application.base.mybatisplus.repository.IBaseMPService;
 import cn.imadc.application.xwareman.module.instance.dto.data.InstanceRedisData;
 import cn.imadc.application.xwareman.module.instance.dto.request.*;
 import cn.imadc.application.xwareman.module.instance.entity.InstanceRedis;
+import io.lettuce.core.KeyScanCursor;
+import io.lettuce.core.ScanArgs;
+import io.lettuce.core.api.sync.RedisCommands;
 
 import java.util.List;
 import java.util.Map;
@@ -149,4 +152,25 @@ public interface IInstanceRedisService extends IBaseMPService<InstanceRedis> {
      * @return 结果
      */
     ResponseW queryInfo(InstanceRedisQueryInfoReqDTO reqDTO);
+
+    /**
+     * 扫描key
+     *
+     * @param keyScanCursor 游标
+     * @param keyList       存储key的数组
+     * @param redisCommands redis连接
+     */
+    void scanKey(KeyScanCursor<String> keyScanCursor, List<String> keyList, RedisCommands<String, String> redisCommands);
+
+    /**
+     * 扫描key
+     *
+     * @param redisNode 节点类型
+     * @param ip        ip
+     * @param port      端口
+     * @param password  密码
+     * @param scanArgs  扫描参数
+     * @return 扫描出来的key
+     */
+    List<String> scanKey(RedisNode redisNode, String ip, int port, String password, ScanArgs scanArgs) throws InterruptedException;
 }

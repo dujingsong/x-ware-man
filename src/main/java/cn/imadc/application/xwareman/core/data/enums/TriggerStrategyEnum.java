@@ -22,7 +22,7 @@ public enum TriggerStrategyEnum implements IEnumAble {
     MAX_VAL_GT_AT_THE_SPECIFIED_TIME(2, "指定时间内最大值超出限额", -1, 0),
     AVG_VAL_GT_AT_THE_SPECIFIED_TIME(3, "指定时间内均值超出限额", -1, 0),
     MIN_VAL_GT_AT_THE_SPECIFIED_TIME(4, "指定时间内最小值超出限额", -1, 0),
-    AVG_VAL_LT_AT_THE_SPECIFIED_TIME(3, "指定时间内均值低于限额", -1, 0),
+    AVG_VAL_LT_AT_THE_SPECIFIED_TIME(5, "指定时间内均值低于限额", -1, 0),
 
     // redis
     PATTERN_KEY_GT_AT_THE_SPECIFIED_TIME(101, "指定时间内匹配的key超出限额", 0, -1),

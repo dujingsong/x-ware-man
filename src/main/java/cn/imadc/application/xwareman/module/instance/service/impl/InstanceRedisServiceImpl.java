@@ -28,6 +28,8 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.lettuce.core.KeyScanCursor;
+import io.lettuce.core.ScanArgs;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.sentinel.api.sync.RedisSentinelCommands;
 import lombok.AllArgsConstructor;
@@ -477,5 +479,33 @@ public class InstanceRedisServiceImpl extends BaseMPServiceImpl<InstanceRedisMap
         queryInfoResDTO.setAllInfo(infoMap);
 
         return ResponseW.success(queryInfoResDTO);
+    }
+
+    @Override
+    public void scanKey(KeyScanCursor<String> keyScanCursor, List<String> keyList, RedisCommands<String, String> redisCommands) {
+        if (keyScanCursor.getCursor().equals("0")) return;
+
+        keyScanCursor = redisCommands.scan(keyScanCursor);
+
+        keyList.addAll(keyScanCursor.getKeys());
+
+        scanKey(keyScanCursor, keyList, redisCommands);
+    }
+
+    @Override
+    public List<String> scanKey(RedisNode redisNode, String ip, int port, String password, ScanArgs scanArgs) throws InterruptedException {
+        if (redisNode.equals(RedisNode.SENTINEL)) return new ArrayList<>();
+
+        // 获取一个连接
+        RedisCommands<String, String> redisCommands = redisClient.getRedisCommands(ip, port, password);
+
+        // 游标
+        KeyScanCursor<String> keyScanCursor = redisCommands.scan(scanArgs);
+        List<String> keys = keyScanCursor.getKeys();
+
+        // 递归获取匹配的key
+        scanKey(keyScanCursor, keys, redisCommands);
+
+        return keys;
     }
 }

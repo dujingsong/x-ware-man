@@ -63,12 +63,13 @@ public interface IItemRedisService extends IBaseMPService<ItemRedis> {
     /**
      * 查询指定时间范围内指定字段的数据
      *
-     * @param col   字段名称
-     * @param begin 开始时间
-     * @param end   结束时间
+     * @param col             字段名称
+     * @param begin           开始时间
+     * @param end             结束时间
+     * @param instanceRedisId redis实例ID
      * @return 符合调价的字段数据列表
      */
-    List<Object> selectColAtSpecifiedTime(String col, LocalDateTime begin, LocalDateTime end);
+    List<Object> selectColAtSpecifiedTime(String col, LocalDateTime begin, LocalDateTime end, Long instanceRedisId);
 
     /**
      * 查询监控收集项列定义

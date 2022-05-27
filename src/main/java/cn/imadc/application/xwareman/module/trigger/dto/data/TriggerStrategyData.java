@@ -20,7 +20,7 @@ public class TriggerStrategyData extends BaseData {
     /**
      * -1 通用； 0 redis； 1 rocketmq
      */
-    private int scope;
+    private Integer scope;
 
     /**
      * 描述
@@ -30,6 +30,11 @@ public class TriggerStrategyData extends BaseData {
     /**
      * 策略枚举
      */
-    private TriggerStrategyEnum strategy;
+    private Integer strategy;
+
+    /**
+     * 策略枚举
+     */
+    private TriggerStrategyEnum strategyEnum;
 
 }

@@ -54,6 +54,13 @@ public class ItemRedisServiceImpl extends BaseMPServiceImpl<ItemRedisMapper, Ite
         QueryWrapper<ItemRedis> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(Constant.DEL_FLAG, Constant.NOT_DEL_VAL);
 
+        if (null != reqDTO.getStartDateTime()) {
+            queryWrapper.ge("create_time", reqDTO.getStartDateTime().format(DateTimeFormatter.ofPattern(Constant.YYYY_MM_DD_HH_MM_SS)));
+        }
+        if (null != reqDTO.getEndDateTime()) {
+            queryWrapper.le("create_time", reqDTO.getEndDateTime().format(DateTimeFormatter.ofPattern(Constant.YYYY_MM_DD_HH_MM_SS)));
+        }
+
         // 实例redisID
         if (null != reqDTO.getInstanceRedisId()) {
             queryWrapper.eq("instance_redis_id", reqDTO.getInstanceRedisId());
@@ -101,9 +108,9 @@ public class ItemRedisServiceImpl extends BaseMPServiceImpl<ItemRedisMapper, Ite
     }
 
     @Override
-    public List<Object> selectColAtSpecifiedTime(String col, LocalDateTime begin, LocalDateTime end) {
+    public List<Object> selectColAtSpecifiedTime(String col, LocalDateTime begin, LocalDateTime end, Long instanceRedisId) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return itemRedisMapper.selectColAtSpecifiedTime(col, begin.format(dateTimeFormatter), end.format(dateTimeFormatter));
+        return itemRedisMapper.selectColAtSpecifiedTime(col, begin.format(dateTimeFormatter), end.format(dateTimeFormatter), instanceRedisId);
     }
 
     @Override

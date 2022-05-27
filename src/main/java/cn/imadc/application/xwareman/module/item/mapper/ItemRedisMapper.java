@@ -18,5 +18,5 @@ import java.util.List;
 @Mapper
 public interface ItemRedisMapper extends BaseMapper<ItemRedis> {
 
-    List<Object> selectColAtSpecifiedTime(@Param("col") String col, @Param("begin") String begin, @Param("end") String end);
+    List<Object> selectColAtSpecifiedTime(@Param("col") String col, @Param("begin") String begin, @Param("end") String end, @Param("instanceRedisId") Long instanceRedisId);
 }

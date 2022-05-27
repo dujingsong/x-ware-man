@@ -34,4 +34,9 @@ public final class Constant extends BaseConstant {
     public static final String LOG_LINE_SEPARATOR
             = "--------------------------------------------------------------------------------------------------------";
 
+    /**
+     * redis scan count
+     */
+    public static final long REDIS_SCAN_COUNT = 10000;
+
 }

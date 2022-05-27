@@ -2,8 +2,7 @@ package cn.imadc.application.xwareman.core.config;
 
 import cn.imadc.application.xwareman.core.data.annoations.StrategyTrigger;
 import cn.imadc.application.xwareman.core.data.constant.Constant;
-import cn.imadc.application.xwareman.core.data.container.DefaultTriggerContainer;
-import cn.imadc.application.xwareman.core.data.strategy.ITriggerStrategy;
+import cn.imadc.application.xwareman.core.data.container.TriggerContainerRegister;
 import cn.imadc.application.xwareman.module.trigger.dto.request.TriggerFindReqDTO;
 import cn.imadc.application.xwareman.module.trigger.entity.Trigger;
 import cn.imadc.application.xwareman.module.trigger.service.ITriggerService;
@@ -18,12 +17,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -41,14 +38,14 @@ public class TriggerContainerConfiguration implements ApplicationContextAware, S
 
     private final ITriggerService triggerService;
 
-    @Qualifier(value = Constant.THREAD_POOL_TASK_SCHEDULER)
-    private final ThreadPoolTaskScheduler threadPoolTaskScheduler;
+    private final TriggerContainerRegister triggerContainerRegister;
 
     private ConfigurableApplicationContext applicationContext;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = (ConfigurableApplicationContext) applicationContext;
+        triggerContainerRegister.setApplicationContext((ConfigurableApplicationContext) applicationContext);
     }
 
     @Override
@@ -71,41 +68,7 @@ public class TriggerContainerConfiguration implements ApplicationContextAware, S
         for (Trigger trigger : triggerList) {
             if (trigger.getStrategy() != annotation.strategy().getValue()) continue;
 
-            registerContainer(beanName, bean, trigger);
+            triggerContainerRegister.registerContainer(beanName, bean, trigger);
         }
-    }
-
-    private void registerContainer(String beanName, Object bean, Trigger trigger) {
-        Class<?> clazz = AopProxyUtils.ultimateTargetClass(bean);
-
-        if (!ITriggerStrategy.class.isAssignableFrom(bean.getClass())) {
-            throw new IllegalStateException(clazz + " is not instance of " + ITriggerStrategy.class.getName());
-        }
-
-        StrategyTrigger annotation = clazz.getAnnotation(StrategyTrigger.class);
-
-        String containerBeanName = String.format("%s_%s", DefaultTriggerContainer.class.getName(), trigger.getId());
-        GenericApplicationContext genericApplicationContext = (GenericApplicationContext) applicationContext;
-
-        genericApplicationContext.registerBean(containerBeanName, DefaultTriggerContainer.class,
-                () -> createTriggerContainer(containerBeanName, (ITriggerStrategy) bean, annotation, trigger));
-
-        DefaultTriggerContainer container = genericApplicationContext.getBean(containerBeanName,
-                DefaultTriggerContainer.class);
-
-        long period = Long.parseLong(trigger.getPeriod());
-        period = TimeUnit.MILLISECONDS.convert(period, TimeUnit.MINUTES);
-        threadPoolTaskScheduler.scheduleAtFixedRate(container, period);
-    }
-
-    private DefaultTriggerContainer createTriggerContainer(String containerBeanName, ITriggerStrategy bean,
-                                                           StrategyTrigger annotation, Trigger trigger) {
-        DefaultTriggerContainer container = new DefaultTriggerContainer();
-        container.setAnnotation(annotation);
-        container.setName(containerBeanName);
-        container.setTrigger(trigger);
-        container.setBean(bean);
-
-        return container;
     }
 }
