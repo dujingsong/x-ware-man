@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.imadc.application.xwareman.module.instance.mapper.InstanceRocketmqMapper">
+
+    <select id="loaInstanceRocketMQData"
+            resultType="cn.imadc.application.xwareman.module.instance.entity.InstanceRocketmq">
+        SELECT t.*
+        FROM instance_rocketmq t
+        LEFT JOIN instance i ON i.id = t.instance_id
+        LEFT JOIN zone z ON z.id = i.zone_id
+        WHERE t.del_flag = #{condition.delFlag}
+        <if test="null != condition.typeVal">
+            AND t.type = #{condition.typeVal}
+        </if>
+        <if test="null != condition.clusterId">
+            AND t.cluster_id = #{condition.clusterId}
+        </if>
+        <if test="null != condition.keywords">
+            AND (i.name LIKE concat('%',#{condition.keywords},'%') OR i.ip LIKE
+            concat('%',#{condition.keywords},'%'))
+        </if>
+    </select>
+    <select id="listInstanceRocketMQData"
+            resultType="cn.imadc.application.xwareman.module.instance.dto.data.InstanceRocketMQData">
+        SELECT t.*,
+               i.ip
+        FROM instance_rocketmq t
+                 LEFT JOIN instance i ON i.id = t.instance_id
+            AND i.del_flag = #{condition.delFlag}
+        WHERE t.del_flag = #{condition.delFlag}
+    </select>
+</mapper>

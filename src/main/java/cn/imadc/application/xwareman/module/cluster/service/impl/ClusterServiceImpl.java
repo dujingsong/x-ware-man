@@ -49,6 +49,11 @@ public class ClusterServiceImpl extends BaseMPServiceImpl<ClusterMapper, Cluster
         QueryWrapper<Cluster> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(Constant.DEL_FLAG, Constant.NOT_DEL_VAL);
 
+        // 类型
+        if (null != reqDTO.getType()) {
+            queryWrapper.eq("type", reqDTO.getType());
+        }
+
         return queryWrapper;
     }
 

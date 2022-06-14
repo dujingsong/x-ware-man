@@ -54,6 +54,10 @@ public class ItemEventServiceImpl extends BaseMPServiceImpl<ItemEventMapper, Ite
             queryWrapper.eq("instance_item_id", reqDTO.getInstanceItemId());
         }
 
+        if (null != reqDTO.getInstanceType()) {
+            queryWrapper.eq("instance_type", reqDTO.getInstanceType());
+        }
+
         queryWrapper.orderByDesc("create_time");
 
         return queryWrapper;

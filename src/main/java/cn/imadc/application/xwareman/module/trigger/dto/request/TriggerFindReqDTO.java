@@ -23,4 +23,8 @@ public class TriggerFindReqDTO extends BaseSearchDTO implements Serializable {
      */
     private Long instanceItemId;
 
+    /**
+     * 类型
+     */
+    private Integer type;
 }

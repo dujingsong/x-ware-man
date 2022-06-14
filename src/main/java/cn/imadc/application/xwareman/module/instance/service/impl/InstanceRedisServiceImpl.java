@@ -234,6 +234,7 @@ public class InstanceRedisServiceImpl extends BaseMPServiceImpl<InstanceRedisMap
         for (DiscoveryRedisRegisterData nodeData : registerNodeData) {
             Cluster cluster = new Cluster();
             cluster.setName(nodeData.getClusterName());
+            cluster.setType(0);
             clusterService.add(cluster);
 
             nodeData.getNodeInfoData().forEach(infoData -> doRegisterNode(infoData, nodeData, reqDTO, cluster));

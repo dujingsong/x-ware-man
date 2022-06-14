@@ -38,5 +38,8 @@ public class Cluster extends BaseEntity implements Serializable {
      */
     private String notes;
 
-
+    /**
+     * 0：redis；1：rocketmq
+     */
+    private Integer type;
 }

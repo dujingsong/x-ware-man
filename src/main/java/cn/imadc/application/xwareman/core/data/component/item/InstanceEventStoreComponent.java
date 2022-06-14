@@ -4,7 +4,9 @@ import cn.imadc.application.xwareman.module.event.entity.ItemEvent;
 import cn.imadc.application.xwareman.module.event.service.IItemEventService;
 import cn.imadc.application.xwareman.module.instance.entity.Instance;
 import cn.imadc.application.xwareman.module.instance.entity.InstanceRedis;
+import cn.imadc.application.xwareman.module.instance.entity.InstanceRocketmq;
 import cn.imadc.application.xwareman.module.instance.service.IInstanceRedisService;
+import cn.imadc.application.xwareman.module.instance.service.IInstanceRocketmqService;
 import cn.imadc.application.xwareman.module.instance.service.IInstanceService;
 import cn.imadc.application.xwareman.module.trigger.entity.Trigger;
 import lombok.AllArgsConstructor;
@@ -27,6 +29,7 @@ public class InstanceEventStoreComponent {
     private final IItemEventService itemEventService;
     private final IInstanceService instanceService;
     private final IInstanceRedisService instanceRedisService;
+    private final IInstanceRocketmqService instanceRocketmqService;
 
     /**
      * 存储
@@ -51,7 +54,9 @@ public class InstanceEventStoreComponent {
                 eventDescSb.append("，端口：").append(instanceRedis.getPort());
 
             } else if (type == 1) {
+                InstanceRocketmq instanceRocketmq = instanceRocketmqService.getById(trigger.getInstanceItemId());
 
+                eventDescSb.append("，端口：").append(instanceRocketmq.getPort());
             }
 
             eventDescSb.append("，告警信息：").append(eventDesc);

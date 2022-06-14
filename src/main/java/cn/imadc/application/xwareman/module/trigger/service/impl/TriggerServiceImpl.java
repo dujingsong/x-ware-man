@@ -7,7 +7,9 @@ import cn.imadc.application.xwareman.core.data.constant.Constant;
 import cn.imadc.application.xwareman.core.data.container.TriggerContainerRegister;
 import cn.imadc.application.xwareman.core.data.enums.TriggerStrategyEnum;
 import cn.imadc.application.xwareman.module.instance.entity.InstanceRedis;
+import cn.imadc.application.xwareman.module.instance.entity.InstanceRocketmq;
 import cn.imadc.application.xwareman.module.instance.service.IInstanceRedisService;
+import cn.imadc.application.xwareman.module.instance.service.IInstanceRocketmqService;
 import cn.imadc.application.xwareman.module.instance.service.IInstanceService;
 import cn.imadc.application.xwareman.module.trigger.dto.data.TriggerStrategyData;
 import cn.imadc.application.xwareman.module.trigger.dto.request.ListTriggerStrategyReqDTO;
@@ -42,6 +44,7 @@ import java.util.Objects;
 public class TriggerServiceImpl extends BaseMPServiceImpl<TriggerMapper, Trigger> implements ITriggerService {
 
     private final IInstanceRedisService instanceRedisService;
+    private final IInstanceRocketmqService instanceRocketmqService;
     private final IInstanceService instanceService;
     private final TriggerContainerRegister triggerContainerRegister;
 
@@ -66,6 +69,11 @@ public class TriggerServiceImpl extends BaseMPServiceImpl<TriggerMapper, Trigger
         // 具体实例ID
         if (null != reqDTO.getInstanceItemId()) {
             queryWrapper.eq("instance_item_id", reqDTO.getInstanceItemId());
+        }
+
+        // 类型
+        if (null != reqDTO.getType()) {
+            queryWrapper.eq("type", reqDTO.getType());
         }
 
         return queryWrapper;
@@ -95,10 +103,15 @@ public class TriggerServiceImpl extends BaseMPServiceImpl<TriggerMapper, Trigger
 
     @Override
     public ResponseW add(Trigger trigger) {
-        trigger.setType(0);
+        Integer type = trigger.getType();
         Long instanceItemId = trigger.getInstanceItemId();
-        InstanceRedis instanceRedis = instanceRedisService.getById(instanceItemId);
-        trigger.setInstanceId(instanceRedis.getInstanceId());
+        if (type == 0) {
+            InstanceRedis instanceRedis = instanceRedisService.getById(instanceItemId);
+            trigger.setInstanceId(instanceRedis.getInstanceId());
+        } else {
+            InstanceRocketmq instanceRocketmq = instanceRocketmqService.getById(instanceItemId);
+            trigger.setInstanceId(instanceRocketmq.getInstanceId());
+        }
 
         if (null != trigger.getPatternJson()) {
             String pattern = trigger.getPatternJson().toJSONString();

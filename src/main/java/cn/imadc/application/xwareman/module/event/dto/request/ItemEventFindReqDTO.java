@@ -15,4 +15,8 @@ public class ItemEventFindReqDTO extends BaseSearchDTO implements Serializable {
      */
     private Long instanceItemId;
 
+    /**
+     * 实例类型（0：redis、1：rocketmq）
+     */
+    private Integer instanceType;
 }

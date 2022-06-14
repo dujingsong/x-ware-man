@@ -28,6 +28,8 @@ spring:
       max-evictable-idle-time-millis: 60000  # 连接保持空闲而不被驱逐的最大时间
 server:
   port: 8080
+  servlet:
+    context-path: /x-ware-man
 
 #mybatis-plus配置
 mybatis-plus:
